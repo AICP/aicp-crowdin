@@ -11,11 +11,11 @@ Prerequisites
 1. The (depreciated) Ruby variant of crowdin-cli >= 0.5.2 (see: https://github.com/crowdin/crowdin-cli) is required for this to work.
    The following commands will install Ruby and the crowdin-cli version on your system:
 
-    \curl -sSL https://get.rvm.io | bash -s stable --ruby
+    '\curl -sSL https://get.rvm.io | bash -s stable --ruby
 
     source /home/your_username/.rvm/scripts/rvm # Add this to your .bashrc file for further usage!
 
-    rvm all do gem install crowdin-cli
+    rvm all do gem install crowdin-cli'
 
 2. python-git is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
 
@@ -31,7 +31,7 @@ Base path should contain all AICP trees in subfolders, named after AICP branches
 
 Example:
 
-/home
+'/home
     /username
         /aicp
             .gitreview      # gitreview config file
@@ -39,7 +39,7 @@ Example:
             /stable         # not necessary
             /n7.1
             /o8.0
-            crowdin_sync.py # crowdin script file
+            crowdin_sync.py # crowdin script file'
 
 NOTE: Syncing stable trees requires an additional environment variable plus the 'stable'
 subfolder under the base path (as shown above), due to crowdin API limitations.
@@ -78,4 +78,3 @@ You can upload your change to Gerrit with commands like these:
     git add *
     git commit
     git review
-
