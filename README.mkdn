@@ -11,15 +11,14 @@ Prerequisites
 1. The (depreciated) Ruby variant of crowdin-cli >= 0.5.2 (see: https://github.com/crowdin/crowdin-cli) is required for this to work.
    The following commands will install Ruby and the crowdin-cli version on your system:
 
-    '\curl -sSL https://get.rvm.io | bash -s stable --ruby
-
+    <code>\curl -sSL https://get.rvm.io | bash -s stable --ruby
     source /home/your_username/.rvm/scripts/rvm # Add this to your .bashrc file for further usage!
-
-    rvm all do gem install crowdin-cli'
+    samtools view -h input1.sam > temp.sam
+    rvm all do gem install crowdin-cli </code>
 
 2. python-git is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
 
-3. Copy /config/<AICP_version>_extra_packages.xml to .repo/local_manifests of each <AICP_version> tree.
+3. Copy <code>/config/"AICP_version"_extra_packages.xml</code> to <code>.repo/local_manifests</code> of each "AICP_version" tree.
    This makes sure you will sync all the extra packages not included in the main manifest.
    Please remember that you should comment out the packages you already have in your
    local aicp_manifest.xml file.
@@ -29,17 +28,17 @@ Executing
 Export the needed environment variables to set the API keys and the base path.
 Base path should contain all AICP trees in subfolders, named after AICP branches.
 
-Example:
+Needed directory structure:
 
-'/home
-    /username
-        /aicp
-            .gitreview      # gitreview config file
-            /config         # yaml files directory
-            /stable         # not necessary
-            /n7.1
-            /o8.0
-            crowdin_sync.py # crowdin script file'
+* /home
+ * /username
+   * /aicp
+     * .gitreview
+     * /config/*.yaml
+     * /stable
+     * /n7.1
+     * /o8.0
+     * crowdin_sync.py
 
 NOTE: Syncing stable trees requires an additional environment variable plus the 'stable'
 subfolder under the base path (as shown above), due to crowdin API limitations.
@@ -60,7 +59,7 @@ Execute:
 (the python script crowdin_sync.py and the *.yaml config directory should be copied into the base
 folder structure, e.g. /home/username/aicp, like shown above)
 
-    ./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download]
+<code>    ./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
 
 Bugs
 ----
