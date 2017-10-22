@@ -31,9 +31,15 @@ Base path should contain all AICP trees in subfolders, named after AICP branches
 
 Example:
 
-/home/username/aicp/stable
-/home/username/aicp/n7.1
-/home/username/aicp/o8.0
+/home
+    /username
+        /aicp
+            .gitreview      # gitreview config file
+            /config         # yaml files directory
+            /stable         # not necessary
+            /n7.1
+            /o8.0
+            crowdin_sync.py # crowdin script file
 
 NOTE: Syncing stable trees requires an additional environment variable plus the 'stable'
 subfolder under the base path (as shown above), due to crowdin API limitations.
@@ -46,13 +52,13 @@ Enviroment variables to export:
 
 Example:
 
-    export AICP_CROWDIN_API_KEY=9876543210ad4929df
+    export AICP_CROWDIN_API_KEY=9876543210ad4929df #AICP crowdin key available to managers
     export AICP_CROWDIN_BASE_PATH=~/aicp
     #export AICP_CROWDIN_STABLE_BASE_PATH=~/aicp/stable
 
 Execute:
-(the python script crowdin_sync.py and the *.yaml config files should be copied into the base
-folder structure, e.g. /home/username/aicp)
+(the python script crowdin_sync.py and the *.yaml config directory should be copied into the base
+folder structure, e.g. /home/username/aicp, like shown above)
 
     ./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download]
 
@@ -72,3 +78,4 @@ You can upload your change to Gerrit with commands like these:
     git add *
     git commit
     git review
+

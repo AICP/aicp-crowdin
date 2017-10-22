@@ -78,7 +78,7 @@ def push_as_commit(base_path, path, name, branch, username):
     repo.git.add('-A')
 
     # Create commit; if it fails, probably empty so skipping
-    message = 'Automatic translation import'
+    message = 'Automatic AICP translation import'
 
     try:
         repo.git.commit(m=message)
