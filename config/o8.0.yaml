@@ -127,6 +127,12 @@ files:
         zh-TW: zh-rTW
         zu: zu
 
+  # frameworks-opt-slimrecent
+  -
+    source:      '/frameworks/opt/slimrecent/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
   # Keyguard
   -
     source:      '/frameworks/base/packages/Keyguard/res/values/aicp_strings.xml'
@@ -150,6 +156,30 @@ files:
     source:      '/packages/apps/AicpExtras/res/values/array.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
+  -
+    source:      '/packages/apps/AicpExtras/res/values/changelog_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/packages/apps/AicpExtras/res/values/color_picker_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/packages/apps/AicpExtras/res/values/seekbar_preference_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/packages/apps/AicpExtras/res/values/stats_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/packages/apps/AicpExtras/res/values/switch_bar_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/packages/apps/AicpExtras/res/values/dslv_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
   # AICP_OTA
   -
@@ -163,8 +193,6 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
-  # DataUsageProvider
-
 # Services
 
 # Vendor
@@ -176,4 +204,3 @@ files:
     source:      '/device/oppo/common/configpanel/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
-
