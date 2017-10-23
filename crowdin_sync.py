@@ -235,10 +235,10 @@ def download_crowdin(base_path, branch, xml, username, config):
     if config:
         files = ['%s/config/%s' % (_DIR, config)]
     else:
-        files = ['%s/config/%s.yaml' % (_DIR, branch),
+        files = ['%s/config/%s.yaml' % (_DIR, branch)]
     for c in files:
         cmd = ['crowdin', '--config=%s' % c, 'list', 'project',
-               '--branch=%s' % branch]
+              '--branch=%s' % branch]
         comm, ret = run_subprocess(cmd)
         if ret != 0:
             sys.exit(ret)
