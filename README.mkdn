@@ -11,10 +11,11 @@ Prerequisites
 1. The (depreciated) Ruby variant of crowdin-cli >= 0.5.2 (see: https://github.com/crowdin/crowdin-cli) is required for this to work.
    The following commands will install Ruby and the crowdin-cli version on your system:
 
-    <code>\curl -sSL https://get.rvm.io | bash -s stable --ruby
-    source /home/your_username/.rvm/scripts/rvm # Add this to your .bashrc file for further usage!
-    samtools view -h input1.sam > temp.sam
-    rvm all do gem install crowdin-cli </code>
+    <code>\curl -sSL https://get.rvm.io | bash -s stable --ruby</code>
+
+    <code>source /home/your_username/.rvm/scripts/rvm # Add this to your .bashrc file</code>
+
+    <code>rvm all do gem install crowdin-cli </code>
 
 2. python-git is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
 
