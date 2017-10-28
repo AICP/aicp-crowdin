@@ -125,9 +125,9 @@ def parse_args():
     parser.add_argument('--upload-sources', action='store_true',
                         help='Upload sources to Crowdin')
     parser.add_argument('--upload-translations', action='store_true',
-                        help='Upload translations to Crowdin')
+                        help='Upload AICP translations to Crowdin')
     parser.add_argument('--download', action='store_true',
-                        help='Download translations from Crowdin')
+                        help='Download AICP translations from Crowdin')
     return parser.parse_args()
 
 # ################################# PREPARE ################################## #
@@ -335,7 +335,7 @@ def main():
     if args.config:
         files = ['%s/config/%s' % (_DIR, args.config)]
     else:
-        files = ['%s/config/%s.yaml' % (_DIR, default_branch)
+        files = ['%s/config/%s.yaml' % (_DIR, default_branch)]
     if not check_files(files):
         sys.exit(1)
 

@@ -60,7 +60,7 @@ Execute:
 (the python script crowdin_sync.py and the *.yaml config directory should be copied into the base
 folder structure, e.g. /home/username/aicp, like shown above)
 
-<code>    ./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
+<code>./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
 
 Bugs
 ----
