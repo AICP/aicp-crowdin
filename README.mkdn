@@ -17,7 +17,7 @@ Prerequisites
 
     <code>rvm all do gem install crowdin-cli </code>
 
-2. python-git is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
+2. Gitpython is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
 
 3. Copy <code>/config/"AICP_version"_extra_packages.xml</code> to <code>.repo/local_manifests</code> of each "AICP_version" tree.
    This makes sure you will sync all the extra packages not included in the main manifest.
