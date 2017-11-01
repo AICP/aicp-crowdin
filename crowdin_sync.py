@@ -246,9 +246,13 @@ def download_crowdin(base_path, branch, xml, username, config):
             paths.append(p.replace('/%s' % branch, ''))
 
     print('\nUploading translations to AICP Gerrit')
-    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % base_path)
-    items = xml_pm.getElementsByTagName('project')
-    #items = [x for sub in xml for x in sub.getElementsByTagName('project')]
+    args = parse_args()
+    default_branch = args.branch
+    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % (base_path))
+    xml_extra = load_xml(x='%s/config/%s_extra_packages.xml' % (_DIR, default_branch))
+    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % (base_path))
+    #items = xml_pm.getElementsByTagName('project')
+    items = [x for sub in xml for x in sub.getElementsByTagName('project')]
     all_projects = []
 
     for path in paths:
