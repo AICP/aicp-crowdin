@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# crowdin_sync.py
+# crowdin-cli_sync.py
 #
 # Updates Crowdin source translations and pushes translations
 # directly to AICP Gerrit.
@@ -30,8 +30,8 @@ import os
 import subprocess
 import sys
 
-# from xml.dom import minidom
-import xml.etree.ElementTree as ET
+from xml.dom import minidom
+# import xml.etree.ElementTree as ET
 
 # ################################# GLOBALS ################################## #
 
@@ -116,7 +116,6 @@ def find_xml(base_path):
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Synchronising AICP translations with Crowdin")
-    #sync = parser.add_mutually_exclusive_group()
     parser.add_argument('-u', '--username', help='Gerrit username',
                         required=True)
     parser.add_argument('-b', '--branch', help='AICP branch',
@@ -144,13 +143,13 @@ def check_dependencies():
 
 def load_xml(x):
     try:
-        #return minidom.parse(x)
-        return ET.parse(x)
+        return minidom.parse(x)
+        # return ET.parse(x)
     except IOError:
         print('You have no %s.' % x, file=sys.stderr)
         return None
     except Exception:
-        # TODO: minidom should not be used.
+        # ToDo: minidom should not be used.
         print('Malformed %s.' % x, file=sys.stderr)
         return None
 
@@ -247,8 +246,9 @@ def download_crowdin(base_path, branch, xml, username, config):
             paths.append(p.replace('/%s' % branch, ''))
 
     print('\nUploading translations to AICP Gerrit')
+    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % (base_path))
     items = xml_pm.getElementsByTagName('project')
-    items = [x for sub in xml for x in sub.getElementsByTagName('project')]
+    #items = [x for sub in xml for x in sub.getElementsByTagName('project')]
     all_projects = []
 
     for path in paths:
@@ -314,7 +314,7 @@ def main():
     if not check_dependencies():
         sys.exit(1)
 
-    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % base_path)
+    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % (base_path))
     if xml_pm is None:
         sys.exit(1)
 
@@ -323,7 +323,7 @@ def main():
     if xml_extra is None:
         sys.exit(1)
 
-    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % base_path)
+    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % (base_path))
     if xml_aicp is not None:
         xml_files = (xml_pm, xml_aicp, xml_extra)
     else:
