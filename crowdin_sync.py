@@ -6,6 +6,7 @@
 # directly to AICP Gerrit.
 #
 # Copyright (C) 2014-2015 The CyanogenMod Project
+# This code has been modified.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,9 +57,6 @@ def run_subprocess(cmd, silent=False):
 
 
 def push_as_commit(base_path, path, name, branch, username):
-    if 'stable/' in base_path:
-        branch = ''.join(('stable/', branch))
-
     print('Committing %s on branch %s' % (name, branch))
 
     # Get path
@@ -118,12 +116,14 @@ def find_xml(base_path):
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Synchronising AICP translations with Crowdin")
-    parser.add_argument('-u', '--username', help='Gerrit username')
+    #sync = parser.add_mutually_exclusive_group()
+    parser.add_argument('-u', '--username', help='Gerrit username',
+                        required=True)
     parser.add_argument('-b', '--branch', help='AICP branch',
                         required=True)
-    parser.add_argument('-c', '--config', help='Custom yaml config')
+    parser.add_argument('-c', '--config', help='Custom yml config')
     parser.add_argument('--upload-sources', action='store_true',
-                        help='Upload sources to Crowdin')
+                        help='Upload sources to AICP Crowdin')
     parser.add_argument('--upload-translations', action='store_true',
                         help='Upload AICP translations to Crowdin')
     parser.add_argument('--download', action='store_true',
@@ -144,6 +144,7 @@ def check_dependencies():
 
 def load_xml(x):
     try:
+        #return minidom.parse(x)
         return ET.parse(x)
     except IOError:
         print('You have no %s.' % x, file=sys.stderr)
@@ -173,7 +174,7 @@ def upload_sources_crowdin(branch, config):
     else:
         print('\nUploading sources to Crowdin (AOSP supported languages)')
         check_run(['crowdin',
-                   '--config=%s/config/%s.yaml' % (_DIR, branch),
+                   '--config=%s/config/%s.yml' % (_DIR, branch),
                    'upload', 'sources', '--branch=%s' % branch])
 
 
@@ -189,7 +190,7 @@ def upload_translations_crowdin(branch, config):
         print('\nUploading translations to Crowdin '
               '(AOSP supported languages)')
         check_run(['crowdin',
-                   '--config=%s/config/%s.yaml' % (_DIR, branch),
+                   '--config=%s/config/%s.yml' % (_DIR, branch),
                    'upload', 'translations', '--branch=%s' % branch,
                    '--no-import-duplicates', '--import-eq-suggestions',
                    '--auto-approve-imported'])
@@ -205,7 +206,7 @@ def download_crowdin(base_path, branch, xml, username, config):
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
         check_run(['crowdin',
-                   '--config=%s/config/%s.yaml' % (_DIR, branch),
+                   '--config=%s/config/%s.yml' % (_DIR, branch),
                    'download', '--branch=%s' % branch])
 
     print('\nRemoving useless empty translation files')
@@ -233,9 +234,9 @@ def download_crowdin(base_path, branch, xml, username, config):
     # Get all files that Crowdin pushed
     paths = []
     if config:
-        files = ['%s/config/%s' % (_DIR, config)]
+        files = [('%s/config/%s' % (_DIR, config))]
     else:
-        files = ['%s/config/%s.yaml' % (_DIR, branch)]
+        files = [('%s/config/%s.yml' % (_DIR, branch))]
     for c in files:
         cmd = ['crowdin', '--config=%s' % c, 'list', 'project',
               '--branch=%s' % branch]
@@ -245,7 +246,8 @@ def download_crowdin(base_path, branch, xml, username, config):
         for p in str(comm[0]).split("\n"):
             paths.append(p.replace('/%s' % branch, ''))
 
-    print('\nUploading translations to Gerrit')
+    print('\nUploading translations to AICP Gerrit')
+    items = xml_pm.getElementsByTagName('project')
     items = [x for sub in xml for x in sub.getElementsByTagName('project')]
     all_projects = []
 
@@ -273,8 +275,8 @@ def download_crowdin(base_path, branch, xml, username, config):
         # project in all_projects and check if it's already in there.
         all_projects.append(result)
 
-        # Search android/default.xml or config/%(branch)_extra_packages.xml
-        # for the project's name
+        # Search %(branch)/platform_manifest/default.xml or
+        # config/%(branch)_extra_packages.xml for the project's name
         for project in items:
             path = project.attributes['path'].value
             if not (result + '/').startswith(path +'/'):
@@ -296,46 +298,41 @@ def main():
     args = parse_args()
     default_branch = args.branch
 
-    if 'stable/' in default_branch:
-        base_path_env = 'AICP_CROWDIN_STABLE_BASE_PATH'
-        base_path = os.getenv(base_path_env)
-        default_branch = default_branch.replace('stable/', '')
-    else:
-        base_path_env = 'AICP_CROWDIN_BASE_PATH'
-        base_path = os.getenv(base_path_env)
+    base_path_env = 'AICP_CROWDIN_BASE_PATH'
+    base_path = os.getenv(base_path_env)
     if base_path is None:
         cwd = os.getcwd()
-        print('You have not set %s. Defaulting to %s' % (base_path_env, cwd))
+        print('You have not set %s. Defaulting to %s' % ('AICP_CROWDIN_BASE_PATH', cwd))
         base_path = cwd
     else:
         base_path = os.path.join(os.path.realpath(base_path), default_branch)
     if not os.path.isdir(base_path):
         print('%s + branch is not a real directory: %s'
-              % (base_path_env, base_path))
+              % ('AICP_CROWDIN_BASE_PATH', base_path))
         sys.exit(1)
 
     if not check_dependencies():
         sys.exit(1)
 
-    xml_android = load_xml(x='%s/platform_manifest/default.xml' % base_path)
-    if xml_android is None:
+    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % base_path)
+    if xml_pm is None:
         sys.exit(1)
 
     xml_extra = load_xml(x='%s/config/%s_extra_packages.xml'
-                           % (_DIR, default_branch))
+                         % (_DIR, default_branch))
     if xml_extra is None:
         sys.exit(1)
 
-    xml_cm = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % base_path)
-    if xml_cm is not None:
-        xml_files = (xml_android, xml_cm, xml_extra)
+    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % base_path)
+    if xml_aicp is not None:
+        xml_files = (xml_pm, xml_aicp, xml_extra)
     else:
-        xml_files = (xml_android, xml_extra)
+        xml_files = (xml_pm, xml_extra)
 
     if args.config:
-        files = ['%s/config/%s' % (_DIR, args.config)]
+        files = [('%s/config/%s' % (_DIR, args.config))]
     else:
-        files = ['%s/config/%s.yaml' % (_DIR, default_branch)]
+        files = [('%s/config/%s.yml' % (_DIR, default_branch))]
     if not check_files(files):
         sys.exit(1)
 
@@ -348,7 +345,7 @@ def main():
     if args.upload_translations:
         upload_translations_crowdin(default_branch, args.config)
     if args.download:
-        download_crowdin(base_path, default_branch, xml_files,
+        download_crowdin(base_path, default_branch, (xml_files),
                          args.username, args.config)
 
     if _COMMITS_CREATED:

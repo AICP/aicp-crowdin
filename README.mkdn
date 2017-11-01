@@ -13,7 +13,7 @@ Prerequisites
 
     <code>\curl -sSL https://get.rvm.io | bash -s stable --ruby</code>
 
-    <code>source /home/your_username/.rvm/scripts/rvm # Add this to your .bashrc file</code>
+    <code>source /home/your_username/.rvm/scripts/rvm  #Add this to your .bashrc file</code>
 
     <code>rvm all do gem install crowdin-cli </code>
 
@@ -34,33 +34,27 @@ Needed directory structure:
 * /home
  * /username
    * /aicp
-     * .gitreview
      * /config/*.yaml
-     * /stable
      * /n7.1
      * /o8.0
+     * /o8.1
      * crowdin_sync.py
 
-NOTE: Syncing stable trees requires an additional environment variable plus the 'stable'
-subfolder under the base path (as shown above), due to crowdin API limitations.
-As AICP has currently no stable branch, this setting should/could not be used.
 Enviroment variables to export:
 
     export AICP_CROWDIN_API_KEY=aicp_api_key
     export AICP_CROWDIN_BASE_PATH=your_base_path
-    #export AICP_CROWDIN_STABLE_BASE_PATH=your_stable_base_path
 
 Example:
 
-    export AICP_CROWDIN_API_KEY=9876543210ad4929df #AICP crowdin key available to managers
+    export AICP_CROWDIN_API_KEY=54e01e81--your-api-key--f6a2724a  #can be found in your project settings page!
     export AICP_CROWDIN_BASE_PATH=~/aicp
-    #export AICP_CROWDIN_STABLE_BASE_PATH=~/aicp/stable
 
 Execute:
-(the python script crowdin_sync.py and the *.yaml config directory should be copied into the base
+(the python script crowdin-cli_sync.py and the *.yaml config directory should be copied into the base
 folder structure, e.g. /home/username/aicp, like shown above)
 
-<code>./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
+<code>./crowdin-cli_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
 
 Bugs
 ----
@@ -69,11 +63,11 @@ Bugs
 
 Submitting changes
 ------------------
-This repository is preconfigured to use the git-review plugin.
+The <code>aicp-crowdin</code> repository is preconfigured to use the git-review plugin.
 More information can be found at:
 https://www.mediawiki.org/wiki/Gerrit/git-review
 
-You can upload your change to Gerrit with commands like these:
+You can upload your change for this repo to AICP Gerrit with commands like these:
 
     git add *
     git commit
