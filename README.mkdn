@@ -1,5 +1,5 @@
-crowdin_sync.py
-==================
+A.) crowdin-cli_sync.py
+=======================
 
 Introduction
 ------------
@@ -13,7 +13,7 @@ Prerequisites
 
     <code>\curl -sSL https://get.rvm.io | bash -s stable --ruby</code>
 
-    <code>source /home/your_username/.rvm/scripts/rvm  #Add this to your .bashrc file</code>
+    <code>source /home/your_username/.rvm/scripts/rvm  #Add this to your ~/.bashrc file</code>
 
     <code>rvm all do gem install crowdin-cli </code>
 
@@ -21,24 +21,24 @@ Prerequisites
 
 3. Copy <code>/config/"AICP_version"_extra_packages.xml</code> to <code>.repo/local_manifests</code> of each "AICP_version" tree.
    This makes sure you will sync all the extra packages not included in the main manifest.
-   Please remember that you should comment out the packages you already have in your
-   local aicp_manifest.xml file.
+   Please remember that you should comment out the packages you already have in your local aicp_manifest.xml file
+   as these are device dependent.
 
 Executing
 ---------
-Export the needed environment variables to set the API keys and the base path.
+Export the needed environment variables to set the API key and the base path.
 Base path should contain all AICP trees in subfolders, named after AICP branches.
 
 Needed directory structure:
 
 * /home
- * /username
+ * /your_username
    * /aicp
      * /config/*.yaml
      * /n7.1
      * /o8.0
      * /o8.1
-     * crowdin_sync.py
+     * crowdin-cli_sync.py
 
 Enviroment variables to export:
 
@@ -47,27 +47,91 @@ Enviroment variables to export:
 
 Example:
 
-    export AICP_CROWDIN_API_KEY=54e01e81--your-api-key--f6a2724a  #can be found in your project settings page!
+    export AICP_CROWDIN_API_KEY=54e01e81--your-api-key--f6a2724a  #Can be found in your project settings page!
     export AICP_CROWDIN_BASE_PATH=~/aicp
 
 Execute:
 (the python script crowdin-cli_sync.py and the *.yaml config directory should be copied into the base
-folder structure, e.g. /home/username/aicp, like shown above)
+folder structure, e.g. /home/your_username/aicp, like shown above)
 
 <code>./crowdin-cli_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
 
-Bugs
-----
+
+B.) crowdin_sync.py
+===================
+
+Introduction
+------------
+This script is forked and modified from LineageOS and used to synchronize AICP translations with Crowdin. Also, it can handle
+automatic commiting to Gerrit and pushing/downloading to/from Crowdin.
+
+Prerequisites
+-------------
+1. The new Crowdin Console Client (CLI) >= 2.0.xx (see: https://github.com/crowdin/crowdin-cli-2) is required for this to work.
+   You can either build it yourself or download the latest standalone Java application and install it
+   from here: https://downloads.crowdin.com/cli/v2/crowdin-cli.zip
+
+   Please make sure you have JAVA >=1.7.55 installed.
+   Now just copy the <code>crowdin-cli.jar</code> to the base directory of your ROM sources (e.g. ~/aicp),
+   where the <code>crowdin_sync.py</code> will reside too.
+   To make it work with the script, add the following line to your <code>~/.bashrc</code> file (on Linux):
+
+   <code>alias crowdin='java -jar crowdin-cli.jar'</code>
+
+2. Gitpython is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
+
+3. Copy <code>/config/"AICP_version"_extra_packages.xml</code> to <code>.repo/local_manifests</code> of each "AICP_version" tree.
+   This makes sure you will sync all the extra packages not included in the main manifest.
+   Please remember that you should comment out the packages you already have in your local aicp_manifest.xml file
+   as these are device dependent.
+
+Executing
+---------
+Export the needed environment variables to set the API key and the base path.
+Base path should contain all AICP trees in subfolders, named after AICP branches.
+
+Needed directory structure:
+
+* /home
+ * /your_username
+   * /aicp
+     * /config/*.yaml
+     * /n7.1
+     * /o8.0
+     * /o8.1
+     * crowdin_sync.py
+     * crowdin-cli.jar
+
+Enviroment variables to export:
+
+    export AICP_CROWDIN_API_KEY=aicp_api_key
+    export AICP_CROWDIN_BASE_PATH=your_base_path
+
+Example:
+
+    export AICP_CROWDIN_API_KEY=54e01e81--your-api-key--f6a2724a  #Can be found in your project settings page!
+    export AICP_CROWDIN_BASE_PATH=~/aicp
+
+Execute:
+(the python script crowdin_sync.py and the *.yaml config directory should be copied into the base
+folder structure, e.g. /home/your_username/aicp, like shown above)
+
+<code>./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
+
+
+Bugs in both scripts
+--------------------
  - When committing fails, the reason of it cannot be determined. Often this is just when there
-   are no new translations, so the script will not exit when this happens!
+   are no new translations, so the script will not exit when this happens or just display
+   "Nothing to commit"!
 
 Submitting changes
 ------------------
-The <code>aicp-crowdin</code> repository is preconfigured to use the git-review plugin.
-More information can be found at:
+The "aicp-crowdin" repository is preconfigured to use the git-review plugin.
+More information about git-review can be found at:
 https://www.mediawiki.org/wiki/Gerrit/git-review
 
-You can upload your change for this repo to AICP Gerrit with commands like these:
+You can upload your change to the repo's master branch on AICP's Gerrit with commands like these:
 
     git add *
     git commit

@@ -120,7 +120,7 @@ def parse_args():
                         required=True)
     parser.add_argument('-b', '--branch', help='AICP branch',
                         required=True)
-    parser.add_argument('-c', '--config', help='Custom yml config')
+    parser.add_argument('-c', '--config', help='Custom yaml config')
     parser.add_argument('--upload-sources', action='store_true',
                         help='Upload sources to AICP Crowdin')
     parser.add_argument('--upload-translations', action='store_true',
@@ -133,10 +133,12 @@ def parse_args():
 
 
 def check_dependencies():
-    # Check for Ruby version of crowdin-cli
-    cmd = ['gem', 'list', 'crowdin-cli', '-i']
-    if run_subprocess(cmd, silent=True)[1] != 0:
-        print('You have not installed crowdin-cli.', file=sys.stderr)
+    # Check for crowdin-cli.jar in base path
+    PATH='crowdin-cli.jar'
+    if os.path.isfile(PATH) and os.access(PATH, os.R_OK):
+        print('crowdin-cli.jar exists in base path and is readable.')
+    else:
+        print('You have not installed crowdin-cli.jar correctly.', file=sys.stderr)
         return False
     return True
 
@@ -173,7 +175,7 @@ def upload_sources_crowdin(branch, config):
     else:
         print('\nUploading sources to Crowdin (AOSP supported languages)')
         check_run(['crowdin',
-                   '--config=%s/config/%s.yml' % (_DIR, branch),
+                   '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'sources', '--branch=%s' % branch])
 
 
@@ -189,7 +191,7 @@ def upload_translations_crowdin(branch, config):
         print('\nUploading translations to Crowdin '
               '(AOSP supported languages)')
         check_run(['crowdin',
-                   '--config=%s/config/%s.yml' % (_DIR, branch),
+                   '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'translations', '--branch=%s' % branch,
                    '--no-import-duplicates', '--import-eq-suggestions',
                    '--auto-approve-imported'])
@@ -205,7 +207,7 @@ def download_crowdin(base_path, branch, xml, username, config):
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
         check_run(['crowdin',
-                   '--config=%s/config/%s.yml' % (_DIR, branch),
+                   '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'download', '--branch=%s' % branch])
 
     print('\nRemoving useless empty translation files')
@@ -235,7 +237,7 @@ def download_crowdin(base_path, branch, xml, username, config):
     if config:
         files = [('%s/config/%s' % (_DIR, config))]
     else:
-        files = [('%s/config/%s.yml' % (_DIR, branch))]
+        files = [('%s/config/%s.yaml' % (_DIR, branch))]
     for c in files:
         cmd = ['crowdin', '--config=%s' % c, 'list', 'project',
               '--branch=%s' % branch]
@@ -336,7 +338,7 @@ def main():
     if args.config:
         files = [('%s/config/%s' % (_DIR, args.config))]
     else:
-        files = [('%s/config/%s.yml' % (_DIR, default_branch))]
+        files = [('%s/config/%s.yaml' % (_DIR, default_branch))]
     if not check_files(files):
         sys.exit(1)
 
