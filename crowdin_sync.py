@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# crowdin_sync.py
+# crowdin-cli_sync.py
 #
 # Updates Crowdin source translations and pushes translations
 # directly to AICP Gerrit.
@@ -133,12 +133,10 @@ def parse_args():
 
 
 def check_dependencies():
-    # Check for crowdin-cli.jar in base path
-    PATH='crowdin-cli.jar'
-    if os.path.isfile(PATH) and os.access(PATH, os.R_OK):
-        print('crowdin-cli.jar exists in base path and is readable.')
-    else:
-        print('You have not installed crowdin-cli.jar correctly.', file=sys.stderr)
+    # Check for Ruby version of crowdin-cli
+    cmd = ['gem', 'list', 'crowdin-cli', '-i']
+    if run_subprocess(cmd, silent=True)[1] != 0:
+        print('You have not installed crowdin-cli.', file=sys.stderr)
         return False
     return True
 
@@ -146,7 +144,7 @@ def check_dependencies():
 def load_xml(x):
     try:
         return minidom.parse(x)
-        #return ET.parse(x)
+        # return ET.parse(x)
     except IOError:
         print('You have no %s.' % x, file=sys.stderr)
         return None
@@ -169,12 +167,12 @@ def check_files(files):
 def upload_sources_crowdin(branch, config):
     if config:
         print('\nUploading sources to Crowdin (custom config)')
-        check_run(['crowdin',
+        check_run(['crowdin-cli',
                    '--config=%s/config/%s' % (_DIR, config),
                    'upload', 'sources', '--branch=%s' % branch])
     else:
         print('\nUploading sources to Crowdin (AOSP supported languages)')
-        check_run(['crowdin',
+        check_run(['crowdin-cli',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'sources', '--branch=%s' % branch])
 
@@ -182,7 +180,7 @@ def upload_sources_crowdin(branch, config):
 def upload_translations_crowdin(branch, config):
     if config:
         print('\nUploading translations to Crowdin (custom config)')
-        check_run(['crowdin',
+        check_run(['crowdin-cli',
                    '--config=%s/config/%s' % (_DIR, config),
                    'upload', 'translations', '--branch=%s' % branch,
                    '--no-import-duplicates', '--import-eq-suggestions',
@@ -190,7 +188,7 @@ def upload_translations_crowdin(branch, config):
     else:
         print('\nUploading translations to Crowdin '
               '(AOSP supported languages)')
-        check_run(['crowdin',
+        check_run(['crowdin-cli',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'translations', '--branch=%s' % branch,
                    '--no-import-duplicates', '--import-eq-suggestions',
@@ -200,13 +198,13 @@ def upload_translations_crowdin(branch, config):
 def download_crowdin(base_path, branch, xml, username, config):
     if config:
         print('\nDownloading translations from Crowdin (custom config)')
-        check_run(['crowdin',
+        check_run(['crowdin-cli',
                    '--config=%s/config/%s' % (_DIR, config),
                    'download', '--branch=%s' % branch])
     else:
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
-        check_run(['crowdin',
+        check_run(['crowdin-cli',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'download', '--branch=%s' % branch])
 
@@ -239,7 +237,7 @@ def download_crowdin(base_path, branch, xml, username, config):
     else:
         files = [('%s/config/%s.yaml' % (_DIR, branch))]
     for c in files:
-        cmd = ['crowdin', '--config=%s' % c, 'list', 'project',
+        cmd = ['crowdin-cli', '--config=%s' % c, 'list', 'project',
               '--branch=%s' % branch]
         comm, ret = run_subprocess(cmd)
         if ret != 0:
@@ -320,7 +318,7 @@ def main():
     if not check_dependencies():
         sys.exit(1)
 
-    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % base_path)
+    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % (base_path))
     if xml_pm is None:
         sys.exit(1)
 
@@ -329,7 +327,7 @@ def main():
     if xml_extra is None:
         sys.exit(1)
 
-    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % base_path)
+    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % (base_path))
     if xml_aicp is not None:
         xml_files = (xml_pm, xml_aicp, xml_extra)
     else:
@@ -358,7 +356,7 @@ def main():
         print('\nDone!')
         sys.exit(0)
     else:
-        print('\nNothing to commit')
+        print('\nFinished! Nothing to do or commit anymore.')
         sys.exit(-1)
 
 if __name__ == '__main__':
