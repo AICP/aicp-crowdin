@@ -1,85 +1,5 @@
-A.) crowdin_sync.py (JAR version)
-===============================
-
-Introduction
-------------
-This script is forked and modified from LineageOS and used to synchronize AICP translations with Crowdin. Also, it can handle
-automatic commiting to Gerrit and pushing/downloading to/from Crowdin.
-
-As it might be easier to use, it is the preferred way.
-
-Prerequisites
--------------
-1. The Crowdin Console Client (CLI) pre-build JAR >= 0.5.2 (see: https://github.com/crowdin/crowdin-cli) is required for this to work.
-   You can either build it yourself or download the latest standalone Java application and install it
-   from here: https://downloads.crowdin.com/cli/v1/crowdin-cli.jar
-
-   Please make sure you have JAVA >=1.7.55 installed!
-   Now just copy the <code>crowdin-cli.jar</code> to the base directory of your ROM sources (e.g. /home/your_username/aicp),
-   where the <code>crowdin_sync.py</code> must reside too.
-   To make the Jar work with the Phython script, add the following line to your <code>~/.bashrc</code> file (on Linux):
-
-   <code>alias crowdin='java -jar crowdin-cli.jar'</code>
-
-2. Gitpython is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
-
-3. Copy <code>/config/AICP_version_extra_packages.xml</code> to <code>.repo/local_manifests</code> of each "AICP_version" tree.
-   This makes sure you will sync all the extra packages not included in the main manifest.
-   Please remember that you should comment out the packages you already have in your local aicp_manifest.xml file
-   as these are device dependent!
-
-Executing
----------
-Export the needed environment variables to set the API key and the base path.
-Base path should contain all AICP trees in subfolders, named after AICP branches.
-
-Needed directory structure:
-
-* /home
- * /your_username
-   * /aicp
-     * /config/.yaml  #all YAML config files go in here!
-     * /n7.1
-       * /.repo
-         * /local_manifests/n7.1_extra_packages.xml
-     * /o8.0
-       * /.repo
-         * /local_manifests/o8.0_extra_packages.xml
-     * crowdin_sync.py
-     * crowdin-cli.jar
-
-Enviroment variables to export:
-
-    export AICP_CROWDIN_API_KEY=aicp_api_key
-    export AICP_CROWDIN_BASE_PATH=your_base_path
-
-Example:
-
-    export AICP_CROWDIN_API_KEY=54e01e81--your-api-key--f6a2724a  #Can be found in your project settings page!
-    export AICP_CROWDIN_BASE_PATH=~/aicp
-
-Execute:
-
-<code>./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
-
-Examples:
-
-<code>./crowdin_sync.py --username GerritName --branch n7.1 --upload-sources</code>
-
-Will upload specified local files from the YAML-config to Crowdin. Translations already there will be preserved.
-
-<code>./crowdin_sync.py --username GerritName --branch n7.1 --upload-translations</code>
-
-Will upload local translations to Crowdin, based on YAML-config and from your local sources.
-
-<code>./crowdin_sync.py --username GerritName --branch n7.1 --download</code>
-
-Will download translations from Crowdin of the specified branch (n7.1), based on YAML-config, to your local sources, delete empty translations and
-upload updated or new translations to Gerrit for review.
-
-
-B.) crowdin-cli_sync.py (Ruby version)
-======================================
+crowdin_sync.py (Ruby version)
+==============================
 
 Introduction
 ------------
@@ -95,7 +15,7 @@ Prerequisites
 
     <code>source /home/your_username/.rvm/scripts/rvm  #Add this to your ~/.bashrc file</code>
 
-    <code>rvm all do gem install crowdin-cli </code>
+    <code>rvm all do gem install crowdin-cli</code>
 
 2. Gitpython is used for Git integration and must be installed (also see: http://gitpython.readthedocs.io/en/stable/intro.html).
 
@@ -121,7 +41,7 @@ Needed directory structure:
      * /o8.0
        * /.repo
          * /local_manifests/o8.0_extra_packages.xml
-     * crowdin-cli_sync.py
+     * crowdin_sync.py
 
 Enviroment variables to export:
 
@@ -134,17 +54,55 @@ Example:
     export AICP_CROWDIN_BASE_PATH=~/aicp
 
 Execute:
-(the python script "crowdin-cli_sync.py" and the "config" directory should be copied into the base
-folder structure, e.g. /home/your_username/aicp, like shown above)
+(the python script "crowdin_sync.py" and the "config" directory should be copied into the base folder structure, e.g. /home/your_username/aicp, like shown above)
 
-<code>./crowdin-cli_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
+<code>./crowdin_sync.py --username your_gerrit_username --branch AICP_version [--upload-sources] [--upload-translations] [--download] </code>
+
+The script incorporates also a little help that can be invoked by executing:
+
+<code>./crowdin_sync.py --help</code>
+
+It will display the following:
+
+<pre>usage: crowdin_sync.py [-h] -u USERNAME -b BRANCH [-c CONFIG]
+                       [--upload-sources] [--upload-translations] [--download]
+
+Synchronising AICP translations with Crowdin
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u USERNAME, --username USERNAME
+                        Gerrit username
+  -b BRANCH, --branch BRANCH
+                        AICP branch
+  -c CONFIG, --config CONFIG
+                        Custom yaml config
+  --upload-sources      Upload sources to AICP Crowdin
+  --upload-translations
+                        Upload AICP translations to Crowdin
+  --download            Download AICP translations from Crowdin</pre>
+
+Examples:
+
+<code>./crowdin_sync.py --username GerritName --branch n7.1 --upload-sources</code>
+
+Will upload specified local files from the YAML-config to Crowdin. Translations already there will be preserved.
+
+<code>./crowdin_sync.py --username GerritName --branch n7.1 --upload-translations</code>
+
+Will upload local translations to Crowdin, based on YAML-config and from your local sources.
+
+<code>./crowdin_sync.py --username GerritName --branch n7.1 --download</code>
+
+Will download translations from Crowdin of the specified branch (n7.1), based on YAML-config, to your local sources, delete empty translations and
+upload updated or new translations to Gerrit for review.
 
 
-Bugs in both scripts
---------------------
+Bugs in the script
+------------------
  - When committing fails, the reason of it cannot be determined. Often this is just when there
    are no new translations, so the script will not exit when this happens or just display
-   "Nothing to commit" or display error messages in the terminal!
+   "Finished! Nothing to do or commit anymore." or display error messages in the terminal!
 
 Submitting changes
 ------------------
