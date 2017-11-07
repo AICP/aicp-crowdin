@@ -1,5 +1,5 @@
-crowdin_sync.py (Ruby version)
-==============================
+crowdin_sync.py
+==============
 
 Introduction
 ------------
