@@ -88,7 +88,7 @@ def push_as_commit(base_path, path, name, branch, username):
     # Push commit
     try:
         repo.git.push('ssh://%s@gerrit.aicp-rom.com:29418/%s' % (username, name),
-                      'HEAD:refs/for/%s%%topic=Translations' % branch)
+                      'HEAD:refs/for/%s%%topic=translations' % branch)
         print('Successfully pushed commit for %s' % name)
     except:
         print('Failed to push commit for %s' % name, file=sys.stderr)
