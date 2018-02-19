@@ -149,6 +149,11 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
+  # Lineage-sdk
+    source:      '/lineage-sdk/lineage/res/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
 # Packages
 
   # AicpExtras
