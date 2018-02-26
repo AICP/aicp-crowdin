@@ -133,6 +133,16 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
+  # frameworks-opt-aicpgear
+  -
+  source:      '/frameworks/opt/aicpgear/res/values/color_picker_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/frameworks/opt/aicpgear//res/values/seekbar_preference_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
   # Keyguard
   -
     source:      '/frameworks/base/packages/Keyguard/res/values/aicp_strings.xml'
@@ -158,14 +168,6 @@ files:
     languages_mapping: *anchor
   -
     source:      '/packages/apps/AicpExtras/res/values/changelog_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-  -
-    source:      '/packages/apps/AicpExtras/res/values/color_picker_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-  -
-    source:      '/packages/apps/AicpExtras/res/values/seekbar_preference_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
   -
@@ -199,7 +201,7 @@ files:
 
 # Device specific
 
-  # oppo common configpanel
+  # device_oppo_common configpanel
   -
     source:      '/device/oppo/common/configpanel/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
