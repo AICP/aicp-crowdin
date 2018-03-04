@@ -135,11 +135,11 @@ files:
 
   # frameworks-opt-aicpgear
   -
-  source:      '/frameworks/opt/aicpgear/res/values/color_picker_strings.xml'
+    source:      '/frameworks/opt/aicpgear/preference/res/values/color_picker_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
   -
-    source:      '/frameworks/opt/aicpgear//res/values/seekbar_preference_strings.xml'
+    source:      '/frameworks/opt/aicpgear/preference/res/values/seekbar_preference_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
