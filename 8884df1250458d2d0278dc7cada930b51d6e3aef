@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "428dc849_d03caf79",
+        "filename": "config/o8.1.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 343
+      },
+      "writtenOn": "2018-04-10T09:40:15Z",
+      "side": 1,
+      "message": "You like them two blank lines, do you? ;)",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 214,
+        "endChar": 0
+      },
+      "revId": "8884df1250458d2d0278dc7cada930b51d6e3aef",
+      "serverId": "9f904cbb-a964-4fab-a7dc-5cfc4d5c238b",
+      "unresolved": false
+    }
+  ]
+}
