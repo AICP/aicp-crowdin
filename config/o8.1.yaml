@@ -220,7 +220,13 @@ files:
 
 # Services
 
-# Vendor
+# Lineage SDK
+
+  # Lineage SDK
+  -
+    source:      '/lineage-sdk/lineage/res/res/values/aicp_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
 # Device specific
 
