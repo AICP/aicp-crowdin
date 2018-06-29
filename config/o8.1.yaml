@@ -191,7 +191,7 @@ files:
 
   # DUI
   -
-    source:      '/packages/apps/DUI/res/values/strings.xml'
+    source:      '/external/DUI/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
