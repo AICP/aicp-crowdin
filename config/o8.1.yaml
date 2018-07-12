@@ -226,6 +226,12 @@ files:
 
 # Services
 
+  # OmniJaws
+  -
+    source:      '/packages/services/OmniJaws/res/values/aicp_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
 # Lineage SDK
 
   # Lineage SDK
