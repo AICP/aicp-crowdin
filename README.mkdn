@@ -35,12 +35,12 @@ Needed directory structure:
  * /your_username
    * /aicp
      * /config/.yaml  #all YAML config files go in here!
-     * /n7.1
+     * /o8.1
        * /.repo
-         * /local_manifests/n7.1_extra_packages.xml
-     * /o8.0
+         * /local_manifests/o8.1_extra_packages.xml
+     * /p9.0
        * /.repo
-         * /local_manifests/o8.0_extra_packages.xml
+         * /local_manifests/p9.0_extra_packages.xml
      * crowdin_sync.py
 
 Enviroment variables to export:
@@ -84,17 +84,17 @@ optional arguments:
 
 Examples:
 
-<code>./crowdin_sync.py --username GerritName --branch n7.1 --upload-sources</code>
+<code>./crowdin_sync.py --username GerritName --branch o8.1 --upload-sources</code>
 
 Will upload specified local files from the YAML-config to Crowdin. Translations already there will be preserved.
 
-<code>./crowdin_sync.py --username GerritName --branch n7.1 --upload-translations</code>
+<code>./crowdin_sync.py --username GerritName --branch o8.1 --upload-translations</code>
 
 Will upload local translations to Crowdin, based on YAML-config and from your local sources.
 
-<code>./crowdin_sync.py --username GerritName --branch n7.1 --download</code>
+<code>./crowdin_sync.py --username GerritName --branch o8.1 --download</code>
 
-Will download translations from Crowdin of the specified branch (n7.1), based on YAML-config, to your local sources, delete empty translations and
+Will download translations from Crowdin of the specified branch (o8.1), based on YAML-config, to your local sources, delete empty translations and
 upload updated or new translations to Gerrit for review.
 
 

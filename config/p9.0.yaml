@@ -28,7 +28,7 @@ files:
 
   # frameworks-res
   -
-    source:      '/frameworks/base/core/res/res/values/aicp_strings.xml'
+    source:      '/frameworks/base/core/res/res/values/gzosp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: &anchor
       android_code:
@@ -128,10 +128,10 @@ files:
         zu: zu
 
   # frameworks-opt-slimrecent
-  -
-    source:      '/frameworks/opt/slimrecent/res/values/strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
+  #-
+    #source:      '/frameworks/opt/slimrecent/res/values/strings.xml'
+    #translation: '/%original_path%-%android_code%/%original_file_name%'
+    #languages_mapping: *anchor
 
   # frameworks-opt-aicpgear
   -
@@ -143,19 +143,14 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
-  # Keyguard
-  -
-    source:      '/frameworks/base/packages/Keyguard/res/values/aicp_strings.xml'
+  # frameworks-base-packages-SettingsLib
+    source:      '/frameworks/base/packages/SettingsLib/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
   # SystemUI
   -
-    source:      '/frameworks/base/packages/SystemUI/res/values/aicp_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-  -
-    source:      '/frameworks/base/packages/SystemUI/res-keyguard/values/aicp_strings.xml'
+    source:      '/frameworks/base/packages/SystemUI/res/values/gzosp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
@@ -194,16 +189,10 @@ files:
     languages_mapping: *anchor
 
   # DUI
-  -
-    source:      '/external/DUI/res/values/strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-
-  # LineageParts
-  -
-    source:      '/packages/apps/LineageParts/res/values/aicp_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
+  #-
+    #source:      '/external/DUI/res/values/strings.xml'
+    #translation: '/%original_path%-%android_code%/%original_file_name%'
+    #languages_mapping: *anchor
 
   # Dialer
   -
@@ -214,10 +203,8 @@ files:
     source:      '/packages/apps/Dialer/java/com/android/dialer/app/res/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
-
-  # OmniStyle
   -
-    source:      '/packages/apps/OmniStyle/res/values/strings.xml'
+    source:      '/packages/apps/Dialer/java/com/android/dialer/lookup/res/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
@@ -226,27 +213,23 @@ files:
     source:      '/packages/apps/Settings/res/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
+  -
+    source:      '/packages/apps/Settings/res/values/gzosp_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
 # Services
 
   # OmniJaws
-  -
-    source:      '/packages/services/OmniJaws/res/values/aicp_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-
-# Lineage SDK
-
-  # Lineage SDK
-  -
-    source:      '/lineage-sdk/lineage/res/res/values/aicp_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
+  #-
+    #source:      '/packages/services/OmniJaws/res/values/aicp_strings.xml'
+    #translation: '/%original_path%-%android_code%/%original_file_name%'
+    #languages_mapping: *anchor
 
 # Device specific
 
   # device_oppo_common configpanel
   -
-    source:      '/device/oppo/common/configpanel/res/values/strings.xml'
+    source:      '/device/oppo/common/overlay/packages/apps/Settings/res/values/devicehandlerstrings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
