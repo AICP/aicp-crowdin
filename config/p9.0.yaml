@@ -208,6 +208,12 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
+  # OmniStyle
+  -
+    source:      '/packages/apps/OmniStyle/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
   # Settings
   -
     source:      '/packages/apps/Settings/res/values/aicp_strings.xml'
