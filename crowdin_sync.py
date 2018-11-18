@@ -31,7 +31,7 @@ import subprocess
 import sys
 
 from xml.dom import minidom
-# import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as etree
 
 # ################################# GLOBALS ################################## #
 
@@ -88,7 +88,7 @@ def push_as_commit(base_path, path, name, branch, username):
     # Push commit
     try:
         repo.git.push('ssh://%s@gerrit.aicp-rom.com:29418/%s' % (username, name),
-                      'HEAD:refs/for/%s%%topic=Translations-p9.0' % branch)
+                      'HEAD:refs/for/%s%%topic=Translations-%s' % (branch, branch))
         print('Successfully pushed commit for %s' % name)
     except:
         print('Failed to push commit for %s' % name, file=sys.stderr)
@@ -102,13 +102,6 @@ def check_run(cmd):
     if ret != 0:
         print('Failed to run cmd: %s' % ' '.join(cmd), file=sys.stderr)
         sys.exit(ret)
-
-
-def find_xml(base_path):
-    for dp, dn, file_names in os.walk(base_path):
-        for f in file_names:
-            if os.path.splitext(f)[1] == '.xml':
-                yield os.path.join(dp, f)
 
 # ############################################################################ #
 
@@ -127,6 +120,8 @@ def parse_args():
                         help='Upload AICP translations to Crowdin')
     parser.add_argument('--download', action='store_true',
                         help='Download AICP translations from Crowdin')
+    parser.add_argument('--local-download', action='store_true',
+                        help='local Download AICP translations from Crowdin')
     return parser.parse_args()
 
 # ################################# PREPARE ################################## #
@@ -144,7 +139,6 @@ def check_dependencies():
 def load_xml(x):
     try:
         return minidom.parse(x)
-        # return ET.parse(x)
     except IOError:
         print('You have no %s.' % x, file=sys.stderr)
         return None
@@ -167,12 +161,11 @@ def check_files(files):
 def upload_sources_crowdin(branch, config):
     if config:
         print('\nUploading sources to Crowdin (custom config)')
-        check_run(['crowdin-cli',
-                   '--config=%s/config/%s' % (_DIR, config),
-                   'upload', 'sources', '--branch=%s' % branch])
     else:
         print('\nUploading sources to Crowdin (AOSP supported languages)')
-        check_run(['crowdin-cli',
+        config=branch + ".yaml"
+
+    check_run(['crowdin-cli',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'sources', '--branch=%s' % branch])
 
@@ -180,33 +173,29 @@ def upload_sources_crowdin(branch, config):
 def upload_translations_crowdin(branch, config):
     if config:
         print('\nUploading translations to Crowdin (custom config)')
-        check_run(['crowdin-cli',
-                   '--config=%s/config/%s' % (_DIR, config),
-                   'upload', 'translations', '--branch=%s' % branch,
-                   '--no-import-duplicates', '--import-eq-suggestions',
-                   '--auto-approve-imported'])
     else:
         print('\nUploading translations to Crowdin '
               '(AOSP supported languages)')
-        check_run(['crowdin-cli',
+        config=branch + ".yaml"
+
+    check_run(['crowdin-cli',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'translations', '--branch=%s' % branch,
                    '--no-import-duplicates', '--import-eq-suggestions',
                    '--auto-approve-imported'])
 
 
-def download_crowdin(base_path, branch, xml, username, config):
+def local_download(base_path, branch, xml, config):
     if config:
         print('\nDownloading translations from Crowdin (custom config)')
-        check_run(['crowdin-cli',
-                   '--config=%s/config/%s' % (_DIR, config),
-                   'download', '--branch=%s' % branch])
     else:
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
-        check_run(['crowdin-cli',
-                   '--config=%s/config/%s.yaml' % (_DIR, branch),
-                   'download', '--branch=%s' % branch])
+        config=branch + ".yaml"
+
+    check_run(['crowdin-cli',
+               '--config=%s/config/%s' % (_DIR, config),
+               'download', '--branch=%s' % branch])
 
     print('\nRemoving useless empty translation files')
     empty_contents = {
@@ -217,18 +206,45 @@ def download_crowdin(base_path, branch, xml, username, config):
         ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
          ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
         ('<resources xmlns:tools="http://schemas.android.com/tools"'
-         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>')
-    }
-    xf = None
-    for xml_file in find_xml(base_path):
-        xf = open(xml_file).read()
-        for line in empty_contents:
-            if line in xf:
-                print('Removing ' + xml_file)
-                os.remove(xml_file)
-                break
-    del xf
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
+        ('<resources xmlns:android="http://schemas.android.com/apk/res/android">\n</resources>'),
+        ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">\n</resources>'),
+        ('<resources xmlns:tools="http://schemas.android.com/tools"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">\n</resources>'),
+        ('<resources>\n</resources>')
+}
 
+    xf = None
+    dom1 = None
+    cmd = ['crowdin-cli', '--config=%s/config/%s' % (_DIR, config), 'list', 'translations']
+    comm, ret = run_subprocess(cmd)
+    if ret != 0:
+        sys.exit(ret)
+    # Split in list and remove last empty entry
+    xml_list=str(comm[0]).split("\n")[:-1]
+    for xml_file in xml_list:
+        try:
+            tree = etree.fromstring(open(base_path + xml_file).read())
+            etree.strip_tags(tree,etree.Comment)
+            treestring = etree.tostring(tree)
+            xf = "".join([s for s in treestring.strip().splitlines(True) if s.strip()])
+            for line in empty_contents:
+                if line in xf:
+                    print('Removing ' + base_path + xml_file)
+                    os.remove(base_path + xml_file)
+                    break
+        except IOError:
+            print("File not found: " + xml_file)
+            sys.exit(1)
+        except etree.XMLSyntaxError:
+            print("XML Syntax error in file: " + xml_file)
+            sys.exit(1)
+    del xf
+    del dom1
+
+def download_crowdin(base_path, branch, xml, username, config):
+    local_download(base_path, branch, xml, config)
     print('\nCreating a list of pushable translations')
     # Get all files that Crowdin pushed
     paths = []
@@ -250,8 +266,7 @@ def download_crowdin(base_path, branch, xml, username, config):
     default_branch = args.branch
     xml_pm = load_xml(x='%s/platform_manifest/default.xml' % (base_path))
     xml_extra = load_xml(x='%s/config/%s_extra_packages.xml' % (_DIR, default_branch))
-    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % (base_path))
-    #items = xml_pm.getElementsByTagName('project')
+    xml_aicp = load_xml(x='%s/platform_manifest/aicp_default.xml' % (base_path))
     items = [x for sub in xml for x in sub.getElementsByTagName('project')]
     all_projects = []
 
@@ -327,7 +342,7 @@ def main():
     if xml_extra is None:
         sys.exit(1)
 
-    xml_aicp = load_xml(x='%s/platform_manifest/snippets/aicp.xml' % (base_path))
+    xml_aicp = load_xml(x='%s/platform_manifest/aicp_default.xml' % (base_path))
     if xml_aicp is not None:
         xml_files = (xml_pm, xml_aicp, xml_extra)
     else:
@@ -351,6 +366,9 @@ def main():
     if args.download:
         download_crowdin(base_path, default_branch, (xml_files),
                          args.username, args.config)
+    if args.local_download:
+        local_download(base_path, default_branch, (xml_files),
+                         args.config)
 
     if _COMMITS_CREATED:
         print('\nDone!')
