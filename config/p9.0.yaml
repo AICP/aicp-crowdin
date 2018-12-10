@@ -193,11 +193,11 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
-  # Smartnavigation
-  #-
-    #source:      '/packages/apps/smartnav/res/values/strings.xml'
-    #translation: '/%original_path%-%android_code%/%original_file_name%'
-    #languages_mapping: *anchor
+  # SmartNavigation
+  -
+    source:      '/packages/apps/SmartNav/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
   # Dialer
   -
