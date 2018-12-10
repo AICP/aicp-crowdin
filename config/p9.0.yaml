@@ -128,10 +128,10 @@ files:
         zu: zu
 
   # frameworks-opt-slimrecent
-  #-
-    #source:      '/frameworks/opt/slimrecent/res/values/strings.xml'
-    #translation: '/%original_path%-%android_code%/%original_file_name%'
-    #languages_mapping: *anchor
+  -
+    source:      '/frameworks/opt/slimrecent/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
   # frameworks-opt-aicpgear
   -
@@ -193,9 +193,9 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
-  # DUI
+  # Smartnavigation
   #-
-    #source:      '/external/DUI/res/values/strings.xml'
+    #source:      '/packages/apps/smartnav/res/values/strings.xml'
     #translation: '/%original_path%-%android_code%/%original_file_name%'
     #languages_mapping: *anchor
 
