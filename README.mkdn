@@ -67,7 +67,7 @@ The script incorporates also a little help that can be invoked by executing:
 
 It will display the following:
 
-<pre>usage: crowdin_sync.py [-h] -u USERNAME -b BRANCH [-c CONFIG] [--upload-sources] [--upload-translations] [--download]
+<pre>usage: crowdin_sync.py [-h] -u USERNAME -b BRANCH [-c CONFIG] [--upload-sources] [--upload-translations] [--download] [--local-download]
 
 Synchronising AICP translations with Crowdin
 

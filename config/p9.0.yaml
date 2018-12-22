@@ -193,12 +193,6 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
-  # SmartNavigation
-  -
-    source:      '/packages/apps/SmartNav/res/values/strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-
   # Dialer
   -
     source:      '/packages/apps/Dialer/java/com/android/dialer/app/res/values/custom_strings.xml'
@@ -213,11 +207,21 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
-  # OmniStyle
-  #-
-    #source:      '/packages/apps/OmniStyle/res/values/strings.xml'
-    #translation: '/%original_path%-%android_code%/%original_file_name%'
-    #languages_mapping: *anchor
+  # DSPManager (OMNI)
+  -
+    source:      '/packages/apps/DSPManager/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
+  # Launcher3
+  -
+    source:      '/packages/apps/Launcher3/res/values/aicp_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/packages/apps/Launcher3/searchlauncher/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
   # Settings
   -
@@ -229,17 +233,27 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
+  # SmartNavigation
+  -
+    source:      '/packages/apps/SmartNav/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
 # Services
 
   # OmniJaws
-  #-
-    #source:      '/packages/services/OmniJaws/res/values/aicp_strings.xml'
-    #translation: '/%original_path%-%android_code%/%original_file_name%'
-    #languages_mapping: *anchor
+  -
+    source:      '/packages/services/OmniJaws/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
 # Device specific
 
-  # device_oppo_common configpanel
+  # device_oppo_common DeviceHandler for OnePlus
+  -
+    source:      '/device/oppo/common/DeviceHandler/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
   -
     source:      '/device/oppo/common/overlay/packages/apps/Settings/res/values/devicehandlerstrings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
