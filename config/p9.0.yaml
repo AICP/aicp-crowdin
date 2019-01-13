@@ -1,4 +1,4 @@
-# o8.1.yml
+# p9.0.yml
 #
 # Crowdin configuration file for AICP
 #
@@ -17,10 +17,10 @@
 # limitations under the License.
 
 # Your crowdin's credentials
-project_identifier: aicp
 api_key_env: AICP_CROWDIN_API_KEY
 base_path_env: AICP_CROWDIN_BASE_PATH
 base_path_contains_branch_subfolders: true
+project_identifier: aicp
 preserve_hierarchy: true
 
 files:
@@ -256,5 +256,11 @@ files:
     languages_mapping: *anchor
   -
     source:      '/device/oppo/common/overlay/packages/apps/Settings/res/values/devicehandlerstrings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
+  # packages_apps_FlipFlap
+  -
+    source:      '/packages/apps/FlipFlap/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
