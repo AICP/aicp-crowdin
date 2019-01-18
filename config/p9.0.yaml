@@ -18,8 +18,7 @@
 
 # Your crowdin's credentials
 api_key_env: AICP_CROWDIN_API_KEY
-base_path_env: AICP_CROWDIN_BASE_PATH
-base_path_contains_branch_subfolders: true
+base_path_env: AICP_CROWDIN_BASE_PATH_p9_0
 project_identifier: aicp
 preserve_hierarchy: true
 

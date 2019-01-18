@@ -5,7 +5,8 @@
 # Updates Crowdin source translations and pushes translations
 # directly to AICP Gerrit.
 #
-# Copyright (C) 2014-2015 The CyanogenMod Project
+# Copyright (C) 2014-2016 The CyanogenMod Project
+# Copyright (C) 2017-2018 The LineageOS Project
 # This code has been modified.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +32,7 @@ import subprocess
 import sys
 
 from xml.dom import minidom
-import xml.etree.ElementTree as etree
+from lxml import etree
 
 # ################################# GLOBALS ################################## #
 
@@ -96,6 +97,50 @@ def push_as_commit(base_path, path, name, branch, username):
     _COMMITS_CREATED = True
 
 
+def submit_gerrit(branch, username):
+    # Find all open translation changes
+    cmd = ['ssh', '-p', '29418',
+        '{}@gerrit.aicp-rom.com'.format(username),
+        'gerrit', 'query',
+        'status:open',
+        'branch:{}'.format(branch),
+        'message:"Automatic AICP translation import"',
+        'topic:Translations-{}'.format(branch),
+        '--current-patch-set']
+    commits = []
+    msg, code = run_subprocess(cmd)
+    if code != 0:
+        print('Failed: {0}'.format(msg[1]))
+        return
+
+    for line in msg[0].split('\n'):
+        if "revision:" not in line:
+            continue;
+        elements = line.split(': ');
+        if len(elements) != 2:
+            print('Unexpected line found: {0}'.format(line))
+        commits.append(elements[1])
+
+    if len(commits) == 0:
+        print("Nothing to submit!")
+        return
+
+    for commit in commits:
+        # Add Code-Review +2 and Verified +1 labels and submit
+        cmd = ['ssh', '-p', '29418',
+        '{}@gerrit.aicp-rom.com'.format(username),
+        'gerrit', 'review',
+        '--verified +1',
+        '--code-review +2',
+        '--submit', commit]
+        msg, code = run_subprocess(cmd, True)
+        if code != 0:
+            errorText = msg[1].replace('\n\n', '; ').replace('\n', '')
+            print('Error on submitting commit {0}: {1}'.format(commit, errorText))
+        else:
+            print('Success on submitting commit {0}'.format(commit))
+
+
 def check_run(cmd):
     p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
     ret = p.wait()
@@ -109,9 +154,9 @@ def check_run(cmd):
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Synchronising AICP translations with Crowdin")
-    parser.add_argument('-u', '--username', help='Gerrit username',
+    parser.add_argument('--username', help='Gerrit username',
                         required=True)
-    parser.add_argument('-b', '--branch', help='AICP branch',
+    parser.add_argument('--branch', help='AICP branch',
                         required=True)
     parser.add_argument('-c', '--config', help='Custom yaml config')
     parser.add_argument('--upload-sources', action='store_true',
@@ -122,16 +167,18 @@ def parse_args():
                         help='Download AICP translations from Crowdin')
     parser.add_argument('--local-download', action='store_true',
                         help='local Download AICP translations from Crowdin')
+    parser.add_argument('--submit', action='store_true',
+                        help='Auto-Merge open AICP translations on Gerrit')
     return parser.parse_args()
 
 # ################################# PREPARE ################################## #
 
 
 def check_dependencies():
-    # Check for Ruby version of crowdin-cli
-    cmd = ['gem', 'list', 'crowdin-cli', '-i']
+    # Check for Java version of crowdin-cli
+    cmd = ['find', '/usr/local/bin/crowdin-cli.jar']
     if run_subprocess(cmd, silent=True)[1] != 0:
-        print('You have not installed crowdin-cli.', file=sys.stderr)
+        print('You have not installed crowdin-cli.jar in its default location.', file=sys.stderr)
         return False
     return True
 
@@ -143,7 +190,6 @@ def load_xml(x):
         print('You have no %s.' % x, file=sys.stderr)
         return None
     except Exception:
-        # ToDo: minidom should not be used.
         print('Malformed %s.' % x, file=sys.stderr)
         return None
 
@@ -161,11 +207,12 @@ def check_files(files):
 def upload_sources_crowdin(branch, config):
     if config:
         print('\nUploading sources to Crowdin (custom config)')
+        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
+                   '--config=%s/config/%s' % (_DIR, config),
+                   'upload', 'sources', '--branch=%s' % branch])
     else:
         print('\nUploading sources to Crowdin (AOSP supported languages)')
-        config=branch + ".yaml"
-
-    check_run(['crowdin-cli',
+        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'sources', '--branch=%s' % branch])
 
@@ -173,12 +220,15 @@ def upload_sources_crowdin(branch, config):
 def upload_translations_crowdin(branch, config):
     if config:
         print('\nUploading translations to Crowdin (custom config)')
+        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
+                   '--config=%s/config/%s' % (_DIR, config),
+                   'upload', 'translations', '--branch=%s' % branch,
+                   '--no-import-duplicates', '--import-eq-suggestions',
+                   '--auto-approve-imported'])
     else:
         print('\nUploading translations to Crowdin '
               '(AOSP supported languages)')
-        config=branch + ".yaml"
-
-    check_run(['crowdin-cli',
+        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'upload', 'translations', '--branch=%s' % branch,
                    '--no-import-duplicates', '--import-eq-suggestions',
@@ -188,16 +238,17 @@ def upload_translations_crowdin(branch, config):
 def local_download(base_path, branch, xml, config):
     if config:
         print('\nDownloading translations from Crowdin (custom config)')
+        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
+                   '--config=%s/config/%s' % (_DIR, config),
+                   'download', '--branch=%s' % branch])
     else:
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
-        config=branch + ".yaml"
+        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
+                   '--config=%s/config/%s.yaml' % (_DIR, branch),
+                   'download', '--branch=%s' % branch])
 
-    check_run(['crowdin-cli',
-               '--config=%s/config/%s' % (_DIR, config),
-               'download', '--branch=%s' % branch])
-
-    print('\nRemoving useless empty translation files')
+    print('\nRemoving useless empty translation files (AOSP supported languages)')
     empty_contents = {
         '<resources/>',
         '<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>',
@@ -217,7 +268,8 @@ def local_download(base_path, branch, xml, config):
 
     xf = None
     dom1 = None
-    cmd = ['crowdin-cli', '--config=%s/config/%s' % (_DIR, config), 'list', 'translations']
+    cmd = ['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
+           '--config=%s/config/%s.yaml' % (_DIR, branch), 'list', 'translations']
     comm, ret = run_subprocess(cmd)
     if ret != 0:
         sys.exit(ret)
@@ -243,8 +295,10 @@ def local_download(base_path, branch, xml, config):
     del xf
     del dom1
 
+
 def download_crowdin(base_path, branch, xml, username, config):
     local_download(base_path, branch, xml, config)
+
     print('\nCreating a list of pushable translations')
     # Get all files that Crowdin pushed
     paths = []
@@ -253,8 +307,8 @@ def download_crowdin(base_path, branch, xml, username, config):
     else:
         files = [('%s/config/%s.yaml' % (_DIR, branch))]
     for c in files:
-        cmd = ['crowdin-cli', '--config=%s' % c, 'list', 'project',
-              '--branch=%s' % branch]
+        cmd = ['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
+               '--config=%s' % c, 'list', 'project', '--branch=%s' % branch]
         comm, ret = run_subprocess(cmd)
         if ret != 0:
             sys.exit(ret)
@@ -317,32 +371,36 @@ def main():
     args = parse_args()
     default_branch = args.branch
 
-    base_path_env = 'AICP_CROWDIN_BASE_PATH'
+    if args.submit:
+        if args.username is None:
+            print('Argument -u/--username is required for submitting!')
+            sys.exit(1)
+        submit_gerrit(default_branch, args.username)
+        sys.exit(0)
+
+    base_path_branch_suffix = default_branch.replace('.', '_')
+    base_path_env = 'AICP_CROWDIN_BASE_PATH_%s' % base_path_branch_suffix
     base_path = os.getenv(base_path_env)
     if base_path is None:
         cwd = os.getcwd()
-        print('You have not set %s. Defaulting to %s' % ('AICP_CROWDIN_BASE_PATH', cwd))
+        print('You have not set %s. Defaulting to %s' % (base_path_env, cwd))
         base_path = cwd
-    else:
-        base_path = os.path.join(os.path.realpath(base_path), default_branch)
     if not os.path.isdir(base_path):
-        print('%s + branch is not a real directory: %s'
-              % ('AICP_CROWDIN_BASE_PATH', base_path))
+        print('%s is not a real directory: %s' % (base_path_env, base_path))
         sys.exit(1)
 
     if not check_dependencies():
         sys.exit(1)
 
-    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % (base_path))
+    xml_pm = load_xml(x='%s/platform_manifest/default.xml' % base_path)
     if xml_pm is None:
         sys.exit(1)
 
-    xml_extra = load_xml(x='%s/config/%s_extra_packages.xml'
-                         % (_DIR, default_branch))
+    xml_extra = load_xml(x='%s/config/%s_extra_packages.xml' % (_DIR, default_branch))
     if xml_extra is None:
         sys.exit(1)
 
-    xml_aicp = load_xml(x='%s/platform_manifest/aicp_default.xml' % (base_path))
+    xml_aicp = load_xml(x='%s/platform_manifest/aicp_default.xml' % base_path)
     if xml_aicp is not None:
         xml_files = (xml_pm, xml_aicp, xml_extra)
     else:
@@ -356,19 +414,22 @@ def main():
         sys.exit(1)
 
     if args.download and args.username is None:
-        print('Argument -u/--username is required for translations download')
+        print('Argument -u/--username is required to perform this action')
         sys.exit(1)
 
     if args.upload_sources:
         upload_sources_crowdin(default_branch, args.config)
+
     if args.upload_translations:
         upload_translations_crowdin(default_branch, args.config)
+
     if args.download:
-        download_crowdin(base_path, default_branch, (xml_files),
+        download_crowdin(base_path, default_branch, xml_files,
                          args.username, args.config)
+
     if args.local_download:
-        local_download(base_path, default_branch, (xml_files),
-                         args.config)
+        local_download(base_path, default_branch, xml_files, args.config)
+
 
     if _COMMITS_CREATED:
         print('\nDone!')
