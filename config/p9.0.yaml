@@ -1,8 +1,9 @@
-# p9.0.yml
+# p9.0.yaml
 #
 # Crowdin configuration file for AICP
 #
 # Copyright (C) 2014-2016 The CyanogenMod Project
+# Copyright (C) 2017-2019 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +28,7 @@ files:
 
   # frameworks-res
   -
-    source:      '/frameworks/base/core/res/res/values/gzosp_strings.xml'
+    source:      '/frameworks/base/core/res/res/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: &anchor
       android_code:
@@ -150,10 +151,6 @@ files:
 
   # SystemUI
   -
-    source:      '/frameworks/base/packages/SystemUI/res/values/gzosp_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-  -
     source:      '/frameworks/base/packages/SystemUI/res/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
@@ -225,10 +222,6 @@ files:
   # Settings
   -
     source:      '/packages/apps/Settings/res/values/aicp_strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-  -
-    source:      '/packages/apps/Settings/res/values/gzosp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
