@@ -11,18 +11,22 @@ Prerequisites
 -------------
 1. Python version 2.7.x is needed to execute this script (as it is necessary for building the sources anyway).
 
-2. the package "python-lxml" for Python 2.7.x is used for removing empty or faulty translations after download. So it needs to be installed on the system. (also see: https://lxml.de/)
+2. The package "python-lxml" is used for removing empty or faulty translations after download. So it needs to be installed on the system. (also see: https://lxml.de/)
 
-3. The prebuilt java version of crowdin-cli >= 2.0.x (see: https://support.crowdin.com/cli-tool/) is required for this to work.
+3. The package "python-yaml" must be installed as it is used for parsing the YAML configuration files for determining which files to push.
+
+4. The package "python-git" is used for Git integration and must be installed (also see: https://gitpython.readthedocs.io/en/stable/).
+
+5. The prebuilt java version of crowdin-cli >= 2.0.x (see: https://support.crowdin.com/cli-tool/) is required for this to work.
    It can be download from here: https://downloads.crowdin.com/cli/v2/crowdin-cli.zip
+
    Follow the installation instructions on the web page and set up the cli-tool correctly.
-   *Note: The current limitation is that the JAR-file must be accessible via the path "/usr/local/bin/". You can of course chang that in the python file.*
 
-4. Currently the crowdin-cli tool requires either Linux or macOS and an appropiate Java version >= 1.7.55 to work.
+   *Note: The current limitation is that the JAR-file must be accessible via the path "/usr/local/bin/". You can of course change that in the python script file.*
 
-5. The package "gitpython2" is used for Git integration and must be installed (also see: https://gitpython.readthedocs.io/en/stable/).
+6. Currently the crowdin-cli tool requires either Linux or macOS and an appropiate Java version >= 1.8.xx to work.
 
-6. Copy <code>/config/AICP-version_extra_packages.xml</code> to <code>.repo/local_manifests</code> of each "AICP-version" tree.
+7. <code>/config/AICP-version_extra_packages.xml</code> must be copied to <code>.repo/local_manifests</code> of each "AICP-version" tree.
    This makes sure you will sync all the extra packages not included in the main manifest.
    Please remember that you should comment out the packages you already have in your local aicp_manifest.xml file
    as these are device dependent.
@@ -36,13 +40,13 @@ The base path should contain all AICP trees in subfolders, named after AICP bran
 Needed directory structure:
 
 * /home
- * /your_username
-   * /aicp
-     * /config/.yaml  #all YAML config files go in here!
-     * /p9.0
-       * /.repo
-         * /local_manifests/p9.0_extra_packages.xml
-     * crowdin_sync.py
+* /your_username
+ * /aicp
+   * /config/.yaml  #all YAML config files go in here!
+   * /p9.0
+     * /.repo
+       * /local_manifests/p9.0_extra_packages.xml
+   * crowdin_sync.py
 
 Enviroment variables to export:
 
@@ -107,8 +111,12 @@ automatically review, verify and submit them into the repositories. This is usef
 Gerrit Admin rights to preform this action.
 
 
-Bugs in the script
-------------------
- - When committing fails, the reason of it cannot be determined. Often this is just when there
-   are no new translations, so the script will not exit when this happens or just display
-   "Finished! Nothing to do or commit anymore." or display error messages in the terminal!
+Notes:
+------
+ - The script and the crowdin-cli JAR file provide some output that make the actions performed show up
+   in the terminal, so you can follow the execution of the commands.
+ - The crowdin JAR file will display a message in the terminal, if it is outdated and found a
+   newer version available for download. This is not an error, just a reminder for you!
+ - When committing a translation fails, the reason of it cannot be determined everytime. The script will
+   simply display the message "Nothing to commit" or an error message mentioning the specific file/commit.
+   The script will continue when this happens and display "Finished! Nothing to do or commit anymore.".
