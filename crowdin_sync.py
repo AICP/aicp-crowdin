@@ -26,13 +26,15 @@
 from __future__ import print_function
 
 import argparse
+import json
 import git
 import os
 import subprocess
 import sys
+import yaml
 
-from xml.dom import minidom
 from lxml import etree
+from xml.dom import minidom
 
 # ################################# GLOBALS ################################## #
 
@@ -57,10 +59,148 @@ def run_subprocess(cmd, silent=False):
     return comm, exit_code
 
 
-def push_as_commit(base_path, path, name, branch, username):
+def add_target_paths(config_files, repo, base_path, project_path):
+    # Add or remove the files given in the config files to the commit
+    count = 0
+    file_paths = []
+    for f in config_files:
+        fh = open(f, "r")
+        try:
+            config = yaml.load(fh)
+            for tf in config['files']:
+                if project_path in tf['source']:
+                    target_path = tf['translation']
+                    lang_codes = tf['languages_mapping']['android_code']
+                    for l in lang_codes:
+                        lpath = get_target_path(tf['translation'], tf['source'],
+                            lang_codes[l], project_path)
+                        file_paths.append(lpath)
+        except yaml.YAMLError as e:
+            print(e, '\n Could not parse YAML.')
+            exit()
+        fh.close()
+
+    # Strip all comments
+    for f in file_paths:
+        clean_file(base_path, project_path, f)
+
+    # Modified and untracked files
+    modified = repo.git.ls_files(m=True, o=True)
+    for m in modified.split('\n'):
+        if m in file_paths:
+            repo.git.add(m)
+            count += 1
+
+    deleted = repo.git.ls_files(d=True)
+    for d in deleted.split('\n'):
+        if d in file_paths:
+            repo.git.rm(d)
+            count += 1
+
+    return count
+
+
+def split_path(path):
+    # Split the given string to path and filename
+    if '/' in path:
+        original_file_name = path[1:][path.rfind("/"):]
+        original_path = path[:path.rfind("/")]
+    else:
+        original_file_name = path
+        original_path = ''
+
+    return original_path, original_file_name
+
+
+def get_target_paths(pattern, source, lang, project_path):
+    # Make strings like '/%original_path%-%android_code%/%original_file_name%' valid file paths
+    # based on the source string's path
+    original_path, original_file_name = split_path(source)
+
+    target_path = pattern #.lstrip('/')
+    target_path = target_path.replace('%original_path%', original_path)
+    target_path = target_path.replace('%android_code%', lang)
+    target_path = target_path.replace('%original_file_name%', original_file_name)
+    target_path = target_path.replace(project_path, '')
+    target_path = target_path.lstrip('/')
+    return target_path
+
+
+def clean_file(base_path, project_path, filename):
+    path = base_path + '/' + project_path + '/' + filename
+
+    # We don't want to create every file, just work with those already existing
+    if not os.path.isfile(path):
+        return
+
+    try:
+        fh = open(path, 'r+')
+    except:
+        print('Something went wrong while opening file %s' % (path))
+        return
+
+    XML = fh.read()
+    tree = etree.fromstring(XML)
+
+    header = ''
+    comments = tree.xpath('//comment()')
+    for c in comments:
+        p = c.getparent()
+        if p is None:
+            # Keep all comments in header
+            header += str(c).replace('\\n', '\n').replace('\\t', '\t') + '\n'
+            continue
+        p.remove(c)
+
+    content = ''
+
+    # Take the original xml declaration and prepend it
+    declaration = XML.split('\n')[0]
+    if '<?' in declaration:
+        content = declaration + '\n'
+
+    content += etree.tostring(tree, pretty_print=True, encoding="utf-8", xml_declaration=False)
+
+    if header != '':
+        content = content.replace('?>\n', '?>\n' + header)
+
+    # Sometimes spaces are added, we don't want them
+    content = re.sub("[ ]*<\/resources>", "</resources>", content)
+
+    # Overwrite file with content stripped by all comments
+    fh.seek(0)
+    fh.write(content)
+    fh.truncate()
+    fh.close()
+
+    # Remove files which don't have any translated strings
+    empty_contents = {
+        '<resources/>',
+        '<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>',
+        ('<resources xmlns:android='
+         '"http://schemas.android.com/apk/res/android"/>'),
+        ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
+        ('<resources xmlns:tools="http://schemas.android.com/tools"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
+        ('<resources xmlns:android="http://schemas.android.com/apk/res/android">\n</resources>'),
+        ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">\n</resources>'),
+        ('<resources xmlns:tools="http://schemas.android.com/tools"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">\n</resources>'),
+        ('<resources>\n</resources>')
+    }
+    for line in empty_contents:
+        if line in content:
+            print('Removing ' + path)
+            os.remove(path)
+            break
+
+def push_as_commit(config_files, base_path, path, name, branch, username):
     print('Committing %s on branch %s' % (name, branch))
 
     # Get path
+    project_path = path
     path = os.path.join(base_path, path)
     if not path.endswith('.git'):
         path = os.path.join(path, '.git')
@@ -68,19 +208,16 @@ def push_as_commit(base_path, path, name, branch, username):
     # Create repo object
     repo = git.Repo(path)
 
-    # Remove previously deleted files from Git
-    files = repo.git.ls_files(d=True).split('\n')
-    if files and files[0]:
-        repo.git.rm(files)
-
     # Add all files to commit
-    repo.git.add('-A')
+    count = add_target_paths(config_files, repo, base_path, project_path)
+
+    if count == 0:
+        print('Nothing to commit')
+        return
 
     # Create commit; if it fails, probably empty so skipping
-    message = 'Automatic AICP translation import'
-
     try:
-        repo.git.commit(m=message)
+        repo.git.commit(m='Automatic AICP translation import')
     except:
         print('Failed to create commit for %s, probably empty: skipping'
               % name, file=sys.stderr)
@@ -106,39 +243,39 @@ def submit_gerrit(branch, username):
         'branch:{}'.format(branch),
         'message:"Automatic AICP translation import"',
         'topic:Translations-{}'.format(branch),
-        '--current-patch-set']
-    commits = []
+        '--current-patch-set',
+        '--format=JSON']
+    commits = 0
     msg, code = run_subprocess(cmd)
     if code != 0:
         print('Failed: {0}'.format(msg[1]))
         return
 
-    for line in msg[0].split('\n'):
-        if "revision:" not in line:
-            continue;
-        elements = line.split(': ');
-        if len(elements) != 2:
-            print('Unexpected line found: {0}'.format(line))
-        commits.append(elements[1])
-
-    if len(commits) == 0:
-        print("Nothing to submit!")
-        return
-
-    for commit in commits:
+    # Each line is one valid JSON object, except the last one, which is empty
+    for line in msg[0].strip('\n').split('\n'):
+        js = json.loads(line)
+        # We get valid JSON, but not every result line is a line we want
+        if not 'currentPatchSet' in js or not 'revision' in js['currentPatchSet']:
+            continue
         # Add Code-Review +2 and Verified +1 labels and submit
         cmd = ['ssh', '-p', '29418',
         '{}@gerrit.aicp-rom.com'.format(username),
         'gerrit', 'review',
         '--verified +1',
         '--code-review +2',
-        '--submit', commit]
+        '--submit', js['currentPatchSet']['revision']]
         msg, code = run_subprocess(cmd, True)
         if code != 0:
             errorText = msg[1].replace('\n\n', '; ').replace('\n', '')
-            print('Error on submitting commit {0}: {1}'.format(commit, errorText))
+            print('Submitting commit {0} failed: {1}'.format(js['url'], errorText))
         else:
-            print('Success on submitting commit {0}'.format(commit))
+            print('Success when submitting commit {0}'.format(js['url']))
+
+        commits += 1
+
+    if commits == 0:
+        print("Nothing to submit!")
+        return
 
 
 def check_run(cmd):
@@ -147,6 +284,13 @@ def check_run(cmd):
     if ret != 0:
         print('Failed to run cmd: %s' % ' '.join(cmd), file=sys.stderr)
         sys.exit(ret)
+
+
+def find_xml(base_path):
+    for dp, dn, file_names in os.walk(base_path):
+        for f in file_names:
+            if os.path.splitext(f)[1] == '.xml':
+                yield os.path.join(dp, f)
 
 # ############################################################################ #
 
@@ -266,53 +410,6 @@ def local_download(base_path, branch, xml, config):
         check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
                    '--config=%s/config/%s_gzosp.yaml' % (_DIR, branch),
                    'download', '--branch=%s' % branch])
-
-    print('\nRemoving useless empty translation files (AOSP supported languages)')
-    empty_contents = {
-        '<resources/>',
-        '<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>',
-        ('<resources xmlns:android='
-         '"http://schemas.android.com/apk/res/android"/>'),
-        ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
-         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
-        ('<resources xmlns:tools="http://schemas.android.com/tools"'
-         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
-        ('<resources xmlns:android="http://schemas.android.com/apk/res/android">\n</resources>'),
-        ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
-         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">\n</resources>'),
-        ('<resources xmlns:tools="http://schemas.android.com/tools"'
-         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">\n</resources>'),
-        ('<resources>\n</resources>')
-}
-
-    xf = None
-    dom1 = None
-    cmd = ['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
-           '--config=%s/config/%s.yaml' % (_DIR, branch), 'list', 'translations']
-    comm, ret = run_subprocess(cmd)
-    if ret != 0:
-        sys.exit(ret)
-    # Split in list and remove last empty entry
-    xml_list=str(comm[0]).split("\n")[:-1]
-    for xml_file in xml_list:
-        try:
-            tree = etree.fromstring(open(base_path + xml_file).read())
-            etree.strip_tags(tree,etree.Comment)
-            treestring = etree.tostring(tree)
-            xf = "".join([s for s in treestring.strip().splitlines(True) if s.strip()])
-            for line in empty_contents:
-                if line in xf:
-                    print('Removing ' + base_path + xml_file)
-                    os.remove(base_path + xml_file)
-                    break
-        except IOError:
-            print("File not found: " + xml_file)
-            sys.exit(1)
-        except etree.XMLSyntaxError:
-            print("XML Syntax error in file: " + xml_file)
-            sys.exit(1)
-    del xf
-    del dom1
 
 
 def download_crowdin(base_path, branch, xml, username, config):
