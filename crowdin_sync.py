@@ -6,7 +6,7 @@
 # directly to AICP Gerrit.
 #
 # Copyright (C) 2014-2016 The CyanogenMod Project
-# Copyright (C) 2017-2018 The LineageOS Project
+# Copyright (C) 2017-2019 The LineageOS Project
 # This code has been modified.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@ import argparse
 import json
 import git
 import os
+import re
 import subprocess
 import sys
 import yaml
@@ -112,7 +113,7 @@ def split_path(path):
     return original_path, original_file_name
 
 
-def get_target_paths(pattern, source, lang, project_path):
+def get_target_path(pattern, source, lang, project_path):
     # Make strings like '/%original_path%-%android_code%/%original_file_name%' valid file paths
     # based on the source string's path
     original_path, original_file_name = split_path(source)
@@ -474,7 +475,7 @@ def download_crowdin(base_path, branch, xml, username, config):
 
             br = project.getAttribute('revision') or branch
 
-            push_as_commit(base_path, result,
+            push_as_commit(files, base_path, result,
                            project.getAttribute('name'), br, username)
             break
 
