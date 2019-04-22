@@ -143,9 +143,15 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
+# frameworks-base-packages-Keyguard
+#  -
+#    source:      '/frameworks/base/packages/Keyguard/res/values/aicp_strings.xml'
+#    translation: '/%original_path%-%android_code%/%original_file_name%'
+#    languages_mapping: *anchor
+
   # frameworks-base-packages-SettingsLib
   -
-    source:      '/frameworks/base/packages/SettingsLib/values/aicp_strings.xml'
+    source:      '/frameworks/base/packages/SettingsLib/res/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
@@ -189,6 +195,12 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
+  # Deskclock
+  -
+    source:      '/packages/apps/DeskClock/res/values/aicp_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
   # Dialer
   -
     source:      '/packages/apps/Dialer/java/com/android/dialer/app/res/values/custom_strings.xml'
@@ -208,6 +220,16 @@ files:
     source:      '/packages/apps/DSPManager/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
+
+  # FMRadio
+#  -
+#    source:      '/packages/apps/FMRadio/res/values/cm_strings.xml'
+#    translation: '/%original_path%-%android_code%/%original_file_name%'
+#    languages_mapping: *anchor
+#  -
+#    source:      '/packages/apps/FMRadio/res/values/strings.xml'
+#    translation: '/%original_path%-%android_code%/%original_file_name%'
+#    languages_mapping: *anchor
 
   # Launcher3
   -
@@ -231,11 +253,33 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
+  # SnapdragonCamera
+#  -
+#    source:      '/packages/apps/SnapdragonCamera/res/values/strings.xml'
+#    translation: '/%original_path%-%android_code%/%original_file_name%'
+#    languages_mapping: *anchor
+#  -
+#    source:      '/packages/apps/SnapdragonCamera/res/values/qcomstrings.xml'
+#    translation: '/%original_path%-%android_code%/%original_file_name%'
+#    languages_mapping: *anchor
+
+# Providers
+
+  # MediaProvider
+  -
+    source:      '/packages/providers/MediaProvider/res/values/aicp_strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
 # Services
 
   # OmniJaws
   -
     source:      '/packages/services/OmniJaws/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+  -
+    source:      '/packages/services/OmniJaws/res/values/aicp_strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 

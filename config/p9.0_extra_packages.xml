@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
   <!-- Extra packages not included in the main manifest -->
-  <project path="packages/apps/FlipFlap" name="AICP/packages_apps_FlipFlap" />
 
-  <!-- Device repositories that can be translated -->
+  <!-- Devicespecific repositories that can be translated -->
   <project path="device/oppo/common" name="AICP/device_oppo_common" />
-
+  <project path="packages/apps/MusicFX" name="AICP/packages_apps_MusicFX" />
+  <project path="packages/apps/FMRadio" name="AICP/packages_apps_FMRadio" />
+  <project path="packages/apps/FlipFlap" name="AICP/packages_apps_FlipFlap" />
 </manifest>
