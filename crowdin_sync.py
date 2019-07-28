@@ -67,7 +67,7 @@ def add_target_paths(config_files, repo, base_path, project_path):
     for f in config_files:
         fh = open(f, "r")
         try:
-            config = yaml.load(fh)
+            config = yaml.load(fh, Loader=yaml.FullLoader)
             for tf in config['files']:
                 if project_path in tf['source']:
                     target_path = tf['translation']
