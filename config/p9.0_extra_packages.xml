@@ -4,8 +4,8 @@
 
   <!-- Devicespecific repositories that can be translated -->
   <project path="device/oppo/common" name="AICP/device_oppo_common" />
-  <project path="device/xiaomi/msm8998-common" name="AICP/device_xiaomi_msm8998-common" />
   <project path="packages/apps/FlipFlap" name="AICP/packages_apps_FlipFlap" />
   <project path="packages/apps/MusicFX" name="AICP/packages_apps_MusicFX" />
   <project path="packages/apps/FMRadio" name="AICP/packages_apps_FMRadio" />
+  <project path="packages/apps/JamesDSPManager" name="AICP/packages_apps_JamesDSPManager" />
 </manifest>

@@ -304,13 +304,3 @@ files:
     source:      '/packages/apps/FlipFlap/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
-
-  # device_xiaomi_msm8998-common Devicesettings
-  -
-    source:      'device/xiaomi/msm8998-common/DeviceSettings/res/values/strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-  -
-    source:      'device/xiaomi/msm8998-common/parts/res/values/strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
