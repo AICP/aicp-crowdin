@@ -224,8 +224,12 @@ files:
     source:      '/packages/apps/JamesDSPManager/app/src/main/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
+  -
+    source:      '/packages/apps/JamesDSPManager/app/src/main/res/values/arrays.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
 
-  # FMRadio
+#  # FMRadio
 #  -
 #    source:      '/packages/apps/FMRadio/res/values/cm_strings.xml'
 #    translation: '/%original_path%-%android_code%/%original_file_name%'
@@ -257,7 +261,7 @@ files:
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
-  # SnapdragonCamera
+#  # SnapdragonCamera
 #  -
 #    source:      '/packages/apps/SnapdragonCamera/res/values/strings.xml'
 #    translation: '/%original_path%-%android_code%/%original_file_name%'
