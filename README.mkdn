@@ -17,16 +17,18 @@ Prerequisites
 
 4. The package "python-git" is used for Git integration and must be installed (also see: https://gitpython.readthedocs.io/en/stable/).
 
-5. The prebuilt java version of crowdin-cli >= 2.0.x (see: https://support.crowdin.com/cli-tool/) is required for this to work.
+5. The installs of the package "gitdb" with its dependency via <code>pip install gitdb</code> for python 2.7.x.
+
+6. The prebuilt java version of crowdin-cli >= 2.0.x (see: https://support.crowdin.com/cli-tool/) is required for this to work.
    It can be download from here: https://downloads.crowdin.com/cli/v2/crowdin-cli.zip
 
    Follow the installation instructions on the web page and set up the cli-tool correctly.
 
    *Note: The current limitation is that the JAR-file must be accessible via the path "/usr/local/bin/". You can of course change that in the python script file.*
 
-6. Currently the crowdin-cli tool requires either Linux or macOS and an appropiate Java version >= 1.8.xx to work.
+7. Currently the crowdin-cli tool requires either Linux or macOS and an appropiate Java version >= 1.8.xx to work.
 
-7. <code>/config/AICP-version_extra_packages.xml</code> must be copied to <code>.repo/local_manifests</code> of each "AICP-version" tree.
+8. <code>/config/AICP-version_extra_packages.xml</code> must be copied to <code>.repo/local_manifests</code> of each "AICP-version" tree.
    This makes sure you will sync all the extra packages not included in the main manifest.
    Please remember that you should comment out the packages you already have in your local aicp_manifest.xml file
    as these are device dependent.
@@ -43,20 +45,20 @@ Needed directory structure:
 * /your_username
  * /aicp
    * /config/.yaml  #all YAML config files go in here!
-   * /p9.0
+   * /q10.0
      * /.repo
-       * /local_manifests/p9.0_extra_packages.xml
+       * /local_manifests/q10.0_extra_packages.xml
    * crowdin_sync.py
 
 Enviroment variables to export:
 
     export AICP_CROWDIN_API_KEY=aicp_api_key
-    export AICP_CROWDIN_BASE_PATH_p9_0=your_base_path_and_branch
+    export AICP_CROWDIN_BASE_PATH_q10_0=your_base_path_and_branch
 
 Example:
 
     export AICP_CROWDIN_API_KEY=54e01e81--your-api-key--f6a2724a  #Can be found in your project settings page!
-    export AICP_CROWDIN_BASE_PATH_p9_0=/home/your_username/aicp/p9.0  #This is dependent on the real path to your source tree
+    export AICP_CROWDIN_BASE_PATH_q10_0=/home/your_username/aicp/q10.0  #This is dependent on the real path to your source tree
 
 Execute:
 The python script "crowdin_sync.py" and the "config" directory should be copied into the base folder structure, e.g. /home/your_username/aicp, like shown above.
@@ -86,27 +88,27 @@ optional arguments:<br />
 
 Examples:
 
-<code>./crowdin_sync.py --username GerritName --branch p9.0 --upload-sources</code>
+<code>./crowdin_sync.py --username GerritName --branch q10.0 --upload-sources</code>
 
 Will upload specified local files from the YAML-config to Crowdin. Translations already there will be preserved.
 
-<code>./crowdin_sync.py --username GerritName --branch p9.0 --upload-translations</code>
+<code>./crowdin_sync.py --username GerritName --branch q10.0 --upload-translations</code>
 
 Will upload local translations to Crowdin, based on YAML-config and from your local sources.
 
-<code>./crowdin_sync.py --username GerritName --branch p9.0 --download</code>
+<code>./crowdin_sync.py --username GerritName --branch q10.0 --download</code>
 
-Will download translations from Crowdin of the specified branch (p9.0), based on YAML-config, to your local sources,
+Will download translations from Crowdin of the specified branch (q10.0), based on YAML-config, to your local sources,
 delete empty translations and upload updated or new translations to AICP Gerrit for review.
 
-<code>./crowdin_sync.py -username GerritName --branch p9.0 --local-download</code>
+<code>./crowdin_sync.py --branch q10.0 --local-download</code>
 
-Will download translations from Crowdin of the specified branch (p9.0), based on YAML-config, to your local sources
+Will download translations from Crowdin of the specified branch (q10.0), based on YAML-config, to your local sources
 and delete empty translations. This is useful to perform local builds and test the imported translations.
 
-<code>./crowdin_sync.py -username GerritName --branch p9.0 --submit</code>
+<code>./crowdin_sync.py --username GerritName --branch q10.0 --submit</code>
 
-Will search for open translations commits on AICP's Gerrit on the specified branch (p9.0) and
+Will search for open translations commits on AICP's Gerrit on the specified branch (q10.0) and
 automatically review, verify and submit them into the repositories. This is useful after successful builds and requires
 Gerrit Admin rights to preform this action.
 
