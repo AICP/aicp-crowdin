@@ -263,19 +263,25 @@ files:
 
 # Device specific
 
-  # device_oppo_common DeviceHandler for OnePlus
-  -
-    source:      '/device/oppo/common/DeviceHandler/res/values/strings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
-  -
-    source:      '/device/oppo/common/overlay/packages/apps/Settings/res/values/devicehandlerstrings.xml'
-    translation: '/%original_path%-%android_code%/%original_file_name%'
-    languages_mapping: *anchor
+#  # device_oppo_common DeviceHandler for OnePlus
+#  -
+#    source:      '/device/oppo/common/DeviceHandler/res/values/strings.xml'
+#    translation: '/%original_path%-%android_code%/%original_file_name%'
+#    languages_mapping: *anchor
+#  -
+#    source:      '/device/oppo/common/overlay/packages/apps/Settings/res/values/devicehandlerstrings.xml'
+#    translation: '/%original_path%-%android_code%/%original_file_name%'
+#    languages_mapping: *anchor
 
   # DeviceSettings
   -
     source:      '/packages/resources/devicesettings/res/values/strings.xml'
+    translation: '/%original_path%-%android_code%/%original_file_name%'
+    languages_mapping: *anchor
+
+  # DeviceParts
+  -
+    source:      'packages/resources/deviceparts/res/values/strings.xml'
     translation: '/%original_path%-%android_code%/%original_file_name%'
     languages_mapping: *anchor
 
