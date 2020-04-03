@@ -35,7 +35,6 @@ import subprocess
 import sys
 import yaml
 
-from itertools import islice
 from lxml import etree
 from signal import signal, SIGINT
 from xml.dom import minidom
@@ -339,46 +338,6 @@ def find_xml(base_path):
             if os.path.splitext(f)[1] == '.xml':
                 yield os.path.join(dp, f)
 
-
-def get_languages(configPath):
-    try:
-        fh = open(configPath, 'r+')
-        data = yaml.safe_load(fh);
-        fh.close();
-
-        languages = []
-        for elem in data['files'][0]['languages_mapping']['android_code']:
-            languages.append(elem);
-        return languages
-    except:
-        return []
-
-
-def available_cpu_count():
-    try:
-        import multiprocessing
-        return multiprocessing.cpu_count()
-    except (ImportError, NotImplementedError):
-        return 4; # Some probably safe default
-
-
-def run_parallel(commands):
-    processes = (subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=sys.stderr)
-        for cmd in commands)
-    slice_size = min(20, available_cpu_count())
-    running_processes = list(islice(processes, slice_size)) # split into slices and start processes
-    while running_processes:
-        for i, process in enumerate(running_processes):
-            # see if the process has finished
-            if process.poll() is not None:
-                out, err = process.communicate()
-                print(out);
-                # get and start next process
-                running_processes[i] = next(processes, None)
-                if running_processes[i] is None:
-                    del running_processes[i]
-                    break
-
 # ############################################################################ #
 
 
@@ -474,16 +433,31 @@ def local_download(base_path, branch, xml, config):
     else:
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
-        commands = []
-        config_path = '%s/config/%s.yaml' % (_DIR, branch);
-        languages = get_languages(config_path)
-        for lang in languages:
-            cmd = ['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
-                   '--config=%s' % config_path,
-                   'download', '--branch=%s' % branch,
-                   '-l=%s' % lang]
-            commands.append(cmd)
-        run_parallel(commands)
+        check_run(['crowdin-cli',
+                   '--config=%s/config/%s.yaml' % (_DIR, branch),
+                   'download', '--branch=%s' % branch])
+
+
+    print('\nRemoving useless empty translation files')
+    empty_contents = {
+        '<resources/>',
+        '<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>',
+        ('<resources xmlns:android='
+         '"http://schemas.android.com/apk/res/android"/>'),
+        ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
+        ('<resources xmlns:tools="http://schemas.android.com/tools"'
+         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>')
+    }
+    xf = None
+    for xml_file in find_xml(base_path):
+        xf = open(xml_file).read()
+        for line in empty_contents:
+            if line in xf:
+                print('Removing ' + xml_file)
+                os.remove(xml_file)
+                break
+    del xf
 
 
 def download_crowdin(base_path, branch, xml, username, config):
