@@ -415,7 +415,7 @@ def upload_translations_crowdin(branch, config):
         check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
                    '--config=%s/config/%s' % (_DIR, config),
                    'upload', 'translations', '--branch=%s' % branch,
-                   '--no-import-duplicates', '--import-eq-suggestions',
+                   '--import-eq-suggestions',
                    '--auto-approve-imported'])
     else:
         print('\nUploading translations to Crowdin '
