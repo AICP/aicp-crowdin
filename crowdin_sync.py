@@ -433,31 +433,9 @@ def local_download(base_path, branch, xml, config):
     else:
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
-        check_run(['crowdin-cli',
+        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar',
                    '--config=%s/config/%s.yaml' % (_DIR, branch),
                    'download', '--branch=%s' % branch])
-
-
-    print('\nRemoving useless empty translation files')
-    empty_contents = {
-        '<resources/>',
-        '<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>',
-        ('<resources xmlns:android='
-         '"http://schemas.android.com/apk/res/android"/>'),
-        ('<resources xmlns:android="http://schemas.android.com/apk/res/android"'
-         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>'),
-        ('<resources xmlns:tools="http://schemas.android.com/tools"'
-         ' xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>')
-    }
-    xf = None
-    for xml_file in find_xml(base_path):
-        xf = open(xml_file).read()
-        for line in empty_contents:
-            if line in xf:
-                print('Removing ' + xml_file)
-                os.remove(xml_file)
-                break
-    del xf
 
 
 def download_crowdin(base_path, branch, xml, username, config):
