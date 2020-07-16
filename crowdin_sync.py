@@ -37,7 +37,6 @@ import yaml
 
 from lxml import etree
 from signal import signal, SIGINT
-from xml.dom import minidom
 
 # ################################# GLOBALS ################################## #
 
@@ -155,7 +154,11 @@ def clean_xml_file(base_path, project_path, filename):
     # Remove strings with 'product=*' attribute but no 'product=default'
     # This will ensure aapt2 will not throw an error when building these
     productStrings = tree.xpath("//string[@product]")
+    alreadyRemoved = []
     for ps in productStrings:
+        # if we already removed the items, don't process them
+        if ps in alreadyRemoved:
+            continue
         stringName = ps.get('name')
         stringsWithSameName = tree.xpath("//string[@name='{0}']".format(stringName))
 
@@ -170,11 +173,11 @@ def clean_xml_file(base_path, project_path, filename):
         # Every occurance of the string has to be removed when no string with the same name and
         # 'product=default' (or no product attribute) was found
         if not hasProductDefault:
-            print("{0}: Found string '{1}' with missing 'product=default' attribute"
-                  .format(path, stringName))
+            print("\n{0}: Found string '{1}' with missing 'product=default' attribute"
+                  .format(path, stringName), end='')
             for string in stringsWithSameName:
                 tree.remove(string)
-                productStrings.remove(string)
+                alreadyRemoved.append(string)
 
     header = ''
     comments = tree.xpath('//comment()')
@@ -210,7 +213,7 @@ def clean_xml_file(base_path, project_path, filename):
     # Remove files which don't have any translated strings
     contentList = list(tree)
     if len(contentList) == 0:
-        print('Removing ' + path)
+        print('\nRemoving ' + path)
         os.remove(path)
 
 
@@ -243,7 +246,7 @@ def reset_file(filepath, repo):
 
 
 def push_as_commit(config_files, base_path, path, name, branch, username):
-    print('Committing %s on branch %s: ' % (name, branch), end='')
+    print('\nCommitting %s on branch %s: ' % (name, branch), end='')
 
     # Get path
     project_path = path
@@ -374,12 +377,12 @@ def check_dependencies():
 
 def load_xml(x):
     try:
-        return minidom.parse(x)
-    except IOError:
-        print('You have no %s.' % x, file=sys.stderr)
+        return etree.parse(x)
+    except etree.XMLSyntaxError:
+        print('Malformed %s.' % x, file=sys.stderr)
         return None
     except Exception:
-        print('Malformed %s.' % x, file=sys.stderr)
+        print('You have no %s.' % x, file=sys.stderr)
         return None
 
 
@@ -480,7 +483,7 @@ def download_crowdin(base_path, branch, xml, username, config):
             paths.append(p.replace('/%s' % branch, ''))
 
     print('\nUploading translations to AICP Gerrit')
-    items = [x for sub in xml for x in sub.getElementsByTagName('project')]
+    items = [x for xmlfile in xml for x in xmlfile.findall("//project")]
     all_projects = []
 
     for path in paths:
@@ -524,7 +527,7 @@ def download_crowdin(base_path, branch, xml, username, config):
         resultPath = None
         resultProject = None
         for project in items:
-            path = project.attributes['path'].value
+            path = project.get('path')
             if not (result + '/').startswith(path +'/'):
                 continue
             # We want the longest match, so projects in subfolders of other projects are also
@@ -543,10 +546,10 @@ def download_crowdin(base_path, branch, xml, username, config):
             result = resultPath
             all_projects.append(result)
 
-        br = resultProject.getAttribute('revision') or branch
+        br = resultProject.get('revision') or branch
 
         push_as_commit(files, base_path, result,
-                       resultProject.getAttribute('name'), br, username)
+                       resultProject.get('name'), br, username)
 
 
 def sig_handler(signal_received, frame):
