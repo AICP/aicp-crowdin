@@ -1,0 +1,320 @@
+# q10.0.yaml
+#
+# Crowdin configuration file for AICP
+#
+# Copyright (C) 2014-2016 The CyanogenMod Project
+# Copyright (C) 2017-2019 The LineageOS Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Your crowdin credentials
+"project_identifier": "aicp"
+"api_key_env": "AICP_CROWDIN_API_KEY"
+"project_id_env": "AICP_CROWDIN_PROJECT_ID"
+"api_token_env": "AICP_CROWDIN_API_TOKEN"
+"base_path_env": AICP_CROWDIN_BASE_PATH_q10_0
+"preserve_hierarchy": true
+
+"files": [
+# Frameworks
+  # frameworks-res
+  {
+    "source": "/frameworks/base/core/res/res/values/aicp_strings.xml",
+    "translation": "/frameworks/base/core/res/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": &anchor {
+      "android_code": {
+      # we need this mapping since Crowdin expects directories
+      # to be named like "values-uk-rUA"
+      # according to specification instead of just "uk"
+        "af": "af",
+        "am": "am",
+        "ar": "ar",
+        "as": "as-rIN",
+        "ast": "ast-rES",
+        "az": "az-rAZ",
+        "be": "be-rBY",
+        "bg": "bg",
+        "bn": "bn-rBD",
+        "bs": "bs-rBA",
+        "ca": "ca",
+        "cs": "cs",
+        "cy": "cy",
+        "da": "da",
+        "de": "de",
+        "el": "el",
+        "en-AU": "en-rAU",
+        "en-GB": "en-rGB",
+        "en-IN": "en-rIN",
+        "en-PT": "en-rPT",
+        "eo": "eo",
+        "es-ES": "es",
+        "es-MX": "es-rMX",
+        "es-US": "es-rUS",
+        "et": "et-rEE",
+        "eu": "eu-rES",
+        "fa": "fa",
+        "fi": "fi",
+        "fr": "fr",
+        "fr-CA": "fr-rCA",
+        "fy-NL": "fy-rNL",
+        "gl": "gl-rES",
+        "gu-IN": "gu-rIN",
+        "he": "iw",
+        "hi": "hi",
+        "hr": "hr",
+        "hu": "hu",
+        "hy-AM": "hy-rAM",
+        "id": "in",
+        "is": "is-rIS",
+        "it": "it",
+        "ja": "ja",
+        "ka": "ka-rGE",
+        "kk": "kk-rKZ",
+        "km": "km-rKH",
+        "kn": "kn-rIN",
+        "ko": "ko",
+        "ku": "ku",
+        "ky": "ky-rKG",
+        "lb": "lb",
+        "lo": "lo-rLA",
+        "lt": "lt",
+        "lv": "lv",
+        "mk": "mk-rMK",
+        "ml-IN": "ml-rIN",
+        "mn": "mn-rMN",
+        "mr": "mr-rIN",
+        "ms": "ms-rMY",
+        "my": "my-rMM",
+        "nb": "nb",
+        "ne-NP": "ne-rNP",
+        "nl": "nl",
+        "or": "or-rIN",
+        "pa-IN": "pa-rIN",
+        "pl": "pl",
+        "pt-PT": "pt-rPT",
+        "pt-BR": "pt-rBR",
+        "rm-CH": "rm",
+        "ro": "ro",
+        "ru": "ru",
+        "si-LK": "si-rLK",
+        "sk": "sk",
+        "sl": "sl",
+        "sq": "sq-rAL",
+        "sr": "sr",
+        "sv-SE": "sv",
+        "sw": "sw",
+        "ta": "ta-rIN",
+        "te": "te-rIN",
+        "th": "th",
+        "tl": "tl",
+        "tr": "tr",
+        "ug": "ug",
+        "uk": "uk",
+        "ur-PK": "ur-rPK",
+        "uz": "uz-rUZ",
+        "vi": "vi",
+        "zh-CN": "zh-rCN",
+        "zh-HK": "zh-rHK",
+        "zh-TW": "zh-rTW",
+        "zu": "zu"
+      }
+    }
+  },
+  # frameworks-opt-slimrecent
+  {
+    "source": "/frameworks/opt/slimrecent/res/values/strings.xml",
+    "translation": "/frameworks/opt/slimrecent/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  # frameworks-opt-aicpgear
+  {
+    "source": "/frameworks/opt/aicpgear/preference/res/values/color_picker_strings.xml",
+    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/frameworks/opt/aicpgear/preference/res/values/seekbar_preference_strings.xml",
+    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  # frameworks-base-packages-SettingsLib
+  {
+    "source": "/frameworks/base/packages/SettingsLib/res/values/aicp_strings.xml",
+    "translation": "/frameworks/base/packages/SettingsLib/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # SystemUI
+  {
+    "source": "/frameworks/base/packages/SystemUI/res/values/aicp_strings.xml",
+    "translation": "/frameworks/base/packages/SystemUI/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/frameworks/base/packages/SystemUI/res-keyguard/values/aicp_strings.xml",
+    "translation": "/frameworks/base/packages/SystemUI/res-keyguard/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # PackageInstaller
+  {
+    "source": "/frameworks/base/packages/PackageInstaller/res/values/aicp_strings.xml",
+    "translation": "/frameworks/base/packages/PackageInstaller/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+# Packages
+  # AicpExtras
+  {
+    "source": "/packages/apps/AicpExtras/res/values/strings.xml",
+    "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/AicpExtras/res/values/changelog_strings.xml",
+    "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/AicpExtras/res/values/dslv_strings.xml",
+    "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/AicpExtras/res/values/master_switch_preference_strings.xml",
+    "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/AicpExtras/res/values/stats_strings.xml",
+    "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/AicpExtras/res/values/switch_bar_strings.xml",
+    "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # Updater
+  {
+    "source": "/packages/apps/Updater/res/values/strings.xml",
+    "translation": "/packages/apps/Updater/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # Dialer
+  {
+    "source": "/packages/apps/Dialer/java/com/android/dialer/app/res/values/aicp_strings.xml",
+    "translation": "/packages/apps/Dialer/java/com/android/dialer/app/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/Dialer/java/com/android/dialer/calldetails/res/values/aicp_strings.xml",
+    "translation": "/packages/apps/Dialer/java/com/android/dialer/calldetails/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # JamesDSPManager
+  {
+    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/strings.xml",
+    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/arrays.xml",
+    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # FMRadio
+  {
+    "source": "/packages/apps/FMRadio/res/values/cm_strings.xml",
+    "translation": "/packages/apps/FMRadio/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/FMRadio/res/values/strings.xml",
+    "translation": "/packages/apps/FMRadio/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # Launcher3
+  {
+    "source": "/packages/apps/Launcher3/res/values/aicp_strings.xml",
+    "translation": "/packages/apps/Launcher3/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # Settings
+  {
+    "source": "/packages/apps/Settings/res/values/aicp_strings.xml",
+    "translation": "/packages/apps/Settings/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+# Providers
+#  # MediaProvider
+#  {
+#    "source": "/packages/providers/MediaProvider/res/values/aicp_strings.xml",
+#    "translation": "/packages/providers/MediaProvider/res/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
+
+# Services
+  # OmniJaws
+  {
+    "source": "/packages/services/OmniJaws/res/values/strings.xml",
+    "translation": "/packages/services/OmniJaws/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/services/OmniJaws/res/values/aicp_strings.xml",
+    "translation": "/packages/services/OmniJaws/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+# Device specific
+  # device_oppo_common DeviceHandler for OnePlus
+  {
+    "source": "/device/oppo/common/DeviceHandler/res/values/strings.xml",
+    "translation": "/device/oppo/common/DeviceHandler/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/device/oppo/common/overlay/packages/apps/Settings/res/values/devicehandlerstrings.xml",
+    "translation": "/device/oppo/common/overlay/packages/apps/Settings/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # DeviceSettings
+  {
+    "source": "/packages/resources/devicesettings/res/values/strings.xml",
+    "translation": "/packages/resources/devicesettings/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # DeviceParts
+  {
+    "source": "/packages/resources/deviceparts/res/values/strings.xml",
+    "translation": "/packages/resources/deviceparts/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # packages_apps_FlipFlap
+  {
+    "source": "/packages/apps/FlipFlap/res/values/strings.xml",
+    "translation": "/packages/apps/FlipFlap/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  }
+]
