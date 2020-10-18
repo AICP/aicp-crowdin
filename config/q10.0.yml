@@ -237,18 +237,6 @@
     "languages_mapping": *anchor
   },
 
-  # FMRadio
-  {
-    "source": "/packages/apps/FMRadio/res/values/cm_strings.xml",
-    "translation": "/packages/apps/FMRadio/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-  {
-    "source": "/packages/apps/FMRadio/res/values/strings.xml",
-    "translation": "/packages/apps/FMRadio/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-
   # Launcher3
   {
     "source": "/packages/apps/Launcher3/res/values/aicp_strings.xml",
