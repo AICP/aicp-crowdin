@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "852868c5_e62bbc53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 343
+      },
+      "writtenOn": "2020-12-12T20:27:36Z",
+      "side": 1,
+      "message": "works fine here using cli version 3.5.0 from the Arch repository. Should work with the package files for other distros too. Just delete the \"old\" installed files.",
+      "revId": "0f36c00fb30c19b05e32fd71a3476480977d3aca",
+      "serverId": "9f904cbb-a964-4fab-a7dc-5cfc4d5c238b"
+    }
+  ]
+}
