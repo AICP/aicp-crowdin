@@ -18,14 +18,15 @@ Prerequisites
 
 5. The install of the package "python-gitdb" with its dependencies via a package manager or via <code>pip install gitdb</code> for python 3.6.x.
 
-6. The prebuilt java version of crowdin-cli >= 3.2.x (see: https://github.com/crowdin/crowdin-cli/releases) is required for this to work.
-   It can be downloaded by pasting this link in a browser: https://downloads.crowdin.com/cli/v3/crowdin-cli.zip
+6. A prebuilt java version of crowdin-cli >= 3.2.x or a packaged version (see: https://support.crowdin.com/cli-tool/) is required for 
+   this script to work.
+   It can be downloaded and installed for different Linux distributions as described on the mentioned webpage.
 
-   *Note: The current limitation is that the JAR-file must be accessible via the path "/usr/local/bin/". You can of course change that in the python script file.*
+   *Note: The current limitation is that the script will search for an executable (alias) using the "which" command on a Linux/macOS installation.*
 
-7. Currently the crowdin-cli tool requires either Windows10 WSL, Linux or macOS and an appropiate Java version >= 1.8.xx to work.
+7. Currently the crowdin-cli tool requires either Windows10 WSL2, macOS or Linux and an appropiate Java version >= 1.8.xx to work.
 
-8. The script relies on the XML-file <code>platform/manifest/crowdin.xml</code> of each "AICP-version" tree.
+8. <code>/config/crowdin.xml</code> must be copied to <code>/q10.0/platform/manifest/crowdin.xml</code> of each "AICP-version" tree.
    This makes sure you will sync all the translatable and extra packages.
    Please remember that you should comment out the packages you already have in your local aicp_manifest.xml file
    as these are device dependent.
@@ -33,7 +34,7 @@ Prerequisites
 
 Executing
 ---------
-Export the needed environment variables to set the API key and the base path to your **.bashrc** or **.bash-profile**.
+Export the needed environment variables to set the API key and the base path to your zsh config, **.bashrc** or **.bash-profile**.
 The base path should contain all AICP trees in subfolders, named after AICP branches.
 
 Needed directory structure:
@@ -41,11 +42,11 @@ Needed directory structure:
 * /home
 * /your_username
  * /aicp
-   * crowdin_sync.py                   #Python script for the crowdin-CLI tool 
-   * /config/q10.0.yml                 #Configuration file for the transaltable repositories
+   * /config/q10.0.yml   #Configuration file for the transaltable repositories
    * /q10.0
      * /.platform
-       * /manifest/crowdin.xml         #Make sure that changes for used repositories are pushed in here too!
+       * /manifest/crowdin.xml
+   * crowdin_sync.py     #Python script for the crowdin-CLI tool
 
 Enviroment variables to export:
 

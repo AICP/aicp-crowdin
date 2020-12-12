@@ -382,10 +382,10 @@ def parse_args():
 
 
 def check_dependencies():
-    # Check for Java version of crowdin-cli
-    cmd = ['find', '/usr/local/bin/crowdin-cli.jar']
+    # Check if crowdin is installed somewhere
+    cmd = ['which', 'crowdin']
     if run_subprocess(cmd, silent=True)[1] != 0:
-        print('You have not installed crowdin-cli.jar in its default location.', file=sys.stderr)
+        print('You have not installed crowdin properly.', file=sys.stderr)
         return False
     return True
 
@@ -414,14 +414,14 @@ def check_files(files):
 def upload_sources_crowdin(project_id, branch, config):
     if config:
         print('\nUploading sources to Crowdin (custom config)')
-        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'upload', 'sources',
+        check_run(['crowdin', 'upload', 'sources',
                    f'--project-id={project_id}',
                    f'--branch={branch}',
                    '--auto-update',
                    f'--config={_DIR}/config/{config}'])
     else:
         print('\nUploading sources to Crowdin (AOSP supported languages)')
-        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'upload', 'sources',
+        check_run(['crowdin', 'upload', 'sources',
                    f'--project-id={project_id}',
                    f'--branch={branch}',
                    '--auto-update',
@@ -431,7 +431,7 @@ def upload_sources_crowdin(project_id, branch, config):
 def upload_translations_crowdin(project_id, branch, config):
     if config:
         print('\nUploading translations to Crowdin (custom config)')
-        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'upload', 'translations',
+        check_run(['crowdin', 'upload', 'translations',
                    f'--project-id={project_id}',
                    f'--branch={branch}',
                    '--import-eq-suggestions',
@@ -440,7 +440,7 @@ def upload_translations_crowdin(project_id, branch, config):
     else:
         print('\nUploading translations to Crowdin '
               '(AOSP supported languages)')
-        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'upload', 'translations',
+        check_run(['crowdin', 'upload', 'translations',
                    f'--project-id={project_id}',
                    f'--branch={branch}',
                    '--import-eq-suggestions',
@@ -451,7 +451,7 @@ def upload_translations_crowdin(project_id, branch, config):
 def local_download(project_id, base_path, branch, xml, config):
     if config:
         print('\nDownloading translations from Crowdin (custom config)')
-        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'download',
+        check_run(['crowdin', 'download',
                    f'--project-id={project_id}',
                    f'--branch={branch}',
                    '--skip-untranslated-strings',
@@ -460,7 +460,7 @@ def local_download(project_id, base_path, branch, xml, config):
     else:
         print('\nDownloading translations from Crowdin '
               '(AOSP supported languages)')
-        check_run(['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'download',
+        check_run(['crowdin', 'download',
                    f'--project-id={project_id}',
                    f'--branch={branch}',
                    '--skip-untranslated-strings',
@@ -488,7 +488,7 @@ def local_download(project_id, base_path, branch, xml, config):
     }
 
     xf = None
-    cmd = ['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'list', 'translations',
+    cmd = ['crowdin', 'list', 'translations',
            f'--project-id={project_id}',
            '--plain',
            f'--config={_DIR}/config/{branch}.yml']
@@ -529,7 +529,7 @@ def download_crowdin(project_id, base_path, branch, xml, username, config):
     else:
         files = [f'{_DIR}/config/{branch}.yml']
     for c in files:
-        cmd = ['java', '-jar', '/usr/local/bin/crowdin-cli.jar', 'list', 'sources',
+        cmd = ['crowdin', 'list', 'sources',
                f'--branch={branch}', f'--config={c}', '--plain']
         comm, ret = run_subprocess(cmd)
         if ret != 0:
