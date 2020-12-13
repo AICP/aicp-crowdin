@@ -16,9 +16,9 @@ Prerequisites
 
 4. The package "python-git" is used for Git integration and must be installed (also see: https://gitpython.readthedocs.io/en/stable/).
 
-5. The install of the package "python-gitdb" with its dependencies via a package manager or via <code>pip install gitdb</code> for python 3.6.x.
+5. The install of the package "python-gitdb" with its dependencies via a package manager or via <code>pip install gitdb</code> for python 3.x.x.
 
-6. A prebuilt java version of crowdin-cli >= 3.2.x or a packaged version (see: https://support.crowdin.com/cli-tool/) is required for 
+6. A prebuilt java version of crowdin-cli >= 3.2.x or a packaged version (see: https://support.crowdin.com/cli-tool/) is required for
    this script to work.
    It can be downloaded and installed for different Linux distributions as described on the mentioned webpage.
 
@@ -42,11 +42,11 @@ Needed directory structure:
 * /home
 * /your_username
  * /aicp
-   * /config/q10.0.yml   #Configuration file for the transaltable repositories
+   * /config/q10.0.yml           #Configuration file for the translatable repositories
    * /q10.0
      * /.platform
-       * /manifest/crowdin.xml
-   * crowdin_sync.py     #Python script for the crowdin-CLI tool
+       * /manifest/crowdin.xml   #Manifest file (used by the script)
+   * crowdin_sync.py             #Python script for the crowdin-CLI tool
 
 Enviroment variables to export:
 
