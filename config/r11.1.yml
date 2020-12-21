@@ -160,11 +160,11 @@
     "translation": "/frameworks/base/packages/SystemUI/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
-  {
-    "source": "/frameworks/base/packages/SystemUI/res-keyguard/values/aicp_strings.xml",
-    "translation": "/frameworks/base/packages/SystemUI/res-keyguard/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
+#  {
+#    "source": "/frameworks/base/packages/SystemUI/res-keyguard/values/aicp_strings.xml",
+#    "translation": "/frameworks/base/packages/SystemUI/res-keyguard/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
 
   # PackageInstaller
   {
@@ -219,23 +219,38 @@
     "translation": "/packages/apps/Dialer/java/com/android/dialer/app/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
-  {
-    "source": "/packages/apps/Dialer/java/com/android/dialer/calldetails/res/values/aicp_strings.xml",
-    "translation": "/packages/apps/Dialer/java/com/android/dialer/calldetails/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
+#  {
+#    "source": "/packages/apps/Dialer/java/com/android/dialer/calldetails/res/values/cm_strings.xml",
+#    "translation": "/packages/apps/Dialer/java/com/android/dialer/calldetails/res/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
+#  {
+#    "source": "/packages/apps/Dialer/java/com/android/dialer/calllogutils/res/values/cm_strings.xml",
+#    "translation": "/packages/apps/Dialer/java/com/android/dialer/calllogutils/res/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
+#  {
+#    "source": "/packages/apps/Dialer/java/com/android/dialer/callstats/res/values/cm_strings.xml",
+#    "translation": "/packages/apps/Dialer/java/com/android/dialer/calllogutils/res/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
+#  {
+#    "source": "/packages/apps/Dialer/java/com/android/dialer/callstats/res/values/cm_plurals.xml",
+#    "translation": "/packages/apps/Dialer/java/com/android/dialer/calllogutils/res/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
 
-  # JamesDSPManager
-  {
-    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/strings.xml",
-    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-  {
-    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/arrays.xml",
-    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
+#  # JamesDSPManager
+#  {
+#    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/strings.xml",
+#    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
+#  {
+#    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/arrays.xml",
+#    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
+#    "languages_mapping": *anchor
+#  },
 
   # Launcher3
   {
@@ -273,18 +288,6 @@
   },
 
 # Device specific
-  # device_oppo_common DeviceHandler for OnePlus
-  {
-    "source": "/device/oppo/common/DeviceHandler/res/values/strings.xml",
-    "translation": "/device/oppo/common/DeviceHandler/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-  {
-    "source": "/device/oppo/common/overlay/packages/apps/Settings/res/values/devicehandlerstrings.xml",
-    "translation": "/device/oppo/common/overlay/packages/apps/Settings/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-
   # DeviceSettings
   {
     "source": "/packages/resources/devicesettings/res/values/strings.xml",
