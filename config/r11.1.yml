@@ -1,4 +1,4 @@
-# q10.0.yaml
+# r11.1.yaml
 #
 # Crowdin configuration file for AICP
 #
@@ -22,7 +22,7 @@
 "api_key_env": "AICP_CROWDIN_API_KEY"
 "project_id_env": "AICP_CROWDIN_PROJECT_ID"
 "api_token_env": "AICP_CROWDIN_API_TOKEN"
-"base_path_env": AICP_CROWDIN_BASE_PATH_q10_0
+"base_path_env": AICP_CROWDIN_BASE_PATH_r11_1
 "preserve_hierarchy": true
 
 "files": [
