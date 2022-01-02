@@ -240,17 +240,17 @@
 #    "languages_mapping": *anchor
 #  },
 
-#  # JamesDSPManager
-#  {
-#    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/strings.xml",
-#    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
-#    "languages_mapping": *anchor
-#  },
-#  {
-#    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/arrays.xml",
-#    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
-#    "languages_mapping": *anchor
-#  },
+  # JamesDSPManager
+  {
+    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/strings.xml",
+    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/apps/JamesDSPManager/app/src/main/res/values/arrays.xml",
+    "translation": "/packages/apps/JamesDSPManager/app/src/main/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
 
   # Launcher3
   {

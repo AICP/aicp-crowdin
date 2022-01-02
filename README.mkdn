@@ -18,13 +18,13 @@ Prerequisites
 
 5. The install of the package "python-gitdb" with its dependencies via a package manager or via <code>pip install gitdb</code> for python 3.x.x.
 
-6. A prebuilt java version of crowdin-cli >= 3.2.x or a packaged version (see: https://support.crowdin.com/cli-tool/) is required for
+6. A prebuilt java version of crowdin-cli >= 3.x.x or a packaged version (see: https://support.crowdin.com/cli-tool/) is required for
    this script to work.
    It can be downloaded and installed for different Linux distributions as described on the mentioned webpage.
 
    *Note: The current limitation is that the script will search for an executable (alias) using the "which" command on a Linux/macOS installation.*
 
-7. Currently the crowdin-cli tool requires either Windows10 WSL2, macOS or Linux and an appropiate Java version >= 1.8.xx to work.
+7. Currently the crowdin-cli tool requires either Windows10+ WSL2, macOS or Linux and an appropiate Java version >= 1.8.x to work.
 
 8. <code>/config/crowdin.xml</code> must be copied to <code>/r11.1/platform/manifest/crowdin.xml</code> of each "AICP-version" tree.
    This makes sure you will sync all the translatable and extra packages.
