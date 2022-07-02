@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <!-- Extra packages not included in the main manifest -->
+
+  <!-- Devicespecific repositories that can be translated -->
+  <!-- <project path="packages/apps/FlipFlap" name="AICP/packages_apps_FlipFlap" remote="aicp" revision="s12.1" /> -->
+  <!-- <project path="packages/apps/JamesDSPManager" name="AICP/packages_apps_JamesDSPManager" remote="aicp" revision="s12.1" /> -->
+</manifest>
