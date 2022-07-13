@@ -312,9 +312,9 @@
   },
 
   # FlipFlap
-#  {
-#    "source": "/packages/apps/FlipFlap/res/values/strings.xml",
-#    "translation": "/packages/apps/FlipFlap/res/values-%android_code%/%original_file_name%",
-#    "languages_mapping": *anchor
-#  }
+  {
+    "source": "/packages/apps/FlipFlap/res/values/strings.xml",
+    "translation": "/packages/apps/FlipFlap/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  }
 ]
