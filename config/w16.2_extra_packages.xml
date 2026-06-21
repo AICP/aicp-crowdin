@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <!-- Extra packages not included in the main manifest -->
+
+  <!-- Devicespecific repositories that can be translated -->
+  <!-- <project path="device/oneplus/sm8150-common" name="AICP/device_oneplus_sm8150-common" remote="aicp" revision="w16.2" />
+
+  <project path="hardware/motorola" name="AICP/hardware_motorola" remote="aicp" revision="w16.2" />
+  <project path="hardware/nothing" name="AICP/hardware_nothing" remote="aicp" revision="w16.2" />
+  <project path="hardware/oplus" name="AICP/hardware_oplus" remote="aicp" revision="w16.2" />
+  <project path="hardware/samsung" name="AICP/hardware_samsung" remote="aicp" revision="w16.2" />
+
+  <project path="packages/apps/PixelParts" name="AICP/packages_apps_PixelParts" remote="aicp" revision="w16.2" /> -->
+</manifest>

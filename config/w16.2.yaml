@@ -1,4 +1,4 @@
-# s12.1.yml
+# w16.2.yml
 #
 # Crowdin configuration file for AICP
 #
@@ -18,11 +18,9 @@
 # limitations under the License.
 
 # Your crowdin credentials
-"project_identifier": "aicp"
-"api_key_env": "AICP_CROWDIN_API_KEY"
-"project_id_env": "AICP_CROWDIN_PROJECT_ID"
-"api_token_env": "AICP_CROWDIN_API_TOKEN"
-"base_path_env": AICP_CROWDIN_BASE_PATH_s12_1
+"project_id": 292249
+"api_token_env": AICP_CROWDIN_API_TOKEN
+"base_path_env": AICP_CROWDIN_BASE_PATH_w16_2
 "preserve_hierarchy": true
 
 "files": [
@@ -130,15 +128,30 @@
       }
     }
   },
-  # frameworks-opt-slimrecent
-  {
-    "source": "/frameworks/opt/slimrecent/res/values/strings.xml",
-    "translation": "/frameworks/opt/slimrecent/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
+
   # frameworks-opt-aicpgear
   {
+    "source": "/frameworks/opt/aicpgear/preference/res/values/app_picker_strings.xml",
+    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/frameworks/opt/aicpgear/preference/res/values/color_blend_strings.xml",
+    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/frameworks/opt/aicpgear/preference/res/values/color_matrix_list_strings.xml",
+    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
     "source": "/frameworks/opt/aicpgear/preference/res/values/color_picker_strings.xml",
+    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/frameworks/opt/aicpgear/preference/res/values/master_switch_preference_strings.xml",
     "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
@@ -152,21 +165,14 @@
     "translation": "/frameworks/opt/aicpgear/util/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
+
+  # frameworks-opt-slimrecent
   {
-    "source": "/frameworks/opt/aicpgear/preference/res/values/color_matrix_list_strings.xml",
-    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
+    "source": "/frameworks/opt/slimrecent/res/values/strings.xml",
+    "translation": "/frameworks/opt/slimrecent/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
-  {
-    "source": "/frameworks/opt/aicpgear/preference/res/values/color_blend_strings.xml",
-    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-  {
-    "source": "/frameworks/opt/aicpgear/preference/res/values/app_picker_strings.xml",
-    "translation": "/frameworks/opt/aicpgear/preference/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
+
   # frameworks-base-packages-SettingsLib
   {
     "source": "/frameworks/base/packages/SettingsLib/res/values/aicp_strings.xml",
@@ -178,13 +184,6 @@
   {
     "source": "/frameworks/base/packages/SystemUI/res/values/aicp_strings.xml",
     "translation": "/frameworks/base/packages/SystemUI/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-
-  # frameworks-base-packages-PackageInstaller
-  {
-    "source": "/frameworks/base/packages/PackageInstaller/res/values/aicp_strings.xml",
-    "translation": "/frameworks/base/packages/PackageInstaller/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
 
@@ -206,11 +205,6 @@
     "languages_mapping": *anchor
   },
   {
-    "source": "/packages/apps/AicpExtras/res/values/master_switch_preference_strings.xml",
-    "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-  {
     "source": "/packages/apps/AicpExtras/res/values/stats_strings.xml",
     "translation": "/packages/apps/AicpExtras/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
@@ -223,8 +217,8 @@
 
   # Updater
   {
-    "source": "/packages/apps/Updater/res/values/strings.xml",
-    "translation": "/packages/apps/Updater/res/values-%android_code%/%original_file_name%",
+    "source": "/packages/apps/Updater/app/src/main/res/values/strings.xml",
+    "translation": "/packages/apps/Updater/app/src/main/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
 
@@ -232,11 +226,6 @@
   {
     "source": "/packages/apps/Dialer/java/com/android/dialer/app/res/values/aicp_strings.xml",
     "translation": "/packages/apps/Dialer/java/com/android/dialer/app/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-  {
-    "source": "/packages/apps/Dialer/java/com/android/dialer/calllog/ui/res/values/aicp_strings.xml",
-    "translation": "/packages/apps/Dialer/java/com/android/dialer/calldetails/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
 
@@ -251,6 +240,13 @@
   {
     "source": "/packages/apps/Settings/res/values/aicp_strings.xml",
     "translation": "/packages/apps/Settings/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+
+  # Theme Picker
+  {
+    "source": "/packages/apps/ThemePicker/res/values/aicp_strings.xml",
+    "translation": "/packages/apps/ThemePicker/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
 
@@ -271,13 +267,8 @@
 # Services
   # OmniJaws
   {
-    "source": "/packages/services/OmniJaws/res/values/strings.xml",
-    "translation": "/packages/services/OmniJaws/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-  {
-    "source": "/packages/services/OmniJaws/res/values/aicp_strings.xml",
-    "translation": "/packages/services/OmniJaws/res/values-%android_code%/%original_file_name%",
+    "source": "/packages/services/OmniJaws/app/src/main/res/values/strings.xml",
+    "translation": "/packages/services/OmniJaws/app/src/main/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
 
@@ -289,10 +280,15 @@
     "languages_mapping": *anchor
   },
 
-  # Aicp Fonts
+  # Aicp Overlays (only Fingerprint icons and animations)
   {
-    "source": "/vendor/aicp/fonts/res/values/strings.xml",
-    "translation": "/vendor/aicp/fonts/res/values-%android_code%/%original_file_name%",
+    "source": "/packages/overlays/AICP/UdfpsIcons/res/values/strings.xml",
+    "translation": "/packages/overlays/AICP/UdfpsIcons/res/values-%android_code%/%original_file_name%",
+    "languages_mapping": *anchor
+  },
+  {
+    "source": "/packages/overlays/AICP/UdfpsAnimations/res/values/strings.xml",
+    "translation": "/packages/overlays/AICP/UdfpsAnimations/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
   },
 
@@ -311,10 +307,10 @@
     "languages_mapping": *anchor
   },
 
-  # FlipFlap
+  # PixelParts
   {
-    "source": "/packages/apps/FlipFlap/res/values/strings.xml",
-    "translation": "/packages/apps/FlipFlap/res/values-%android_code%/%original_file_name%",
+    "source": "/packages/apps/PixelParts/res/values/strings.xml",
+    "translation": "/packages/apps/PixelParts/res/values-%android_code%/%original_file_name%",
     "languages_mapping": *anchor
-  }
+  },
 ]
