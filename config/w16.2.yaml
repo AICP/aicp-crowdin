@@ -215,13 +215,6 @@
     "languages_mapping": *anchor
   },
 
-  # Updater
-  {
-    "source": "/packages/apps/Updater/app/src/main/res/values/strings.xml",
-    "translation": "/packages/apps/Updater/app/src/main/res/values-%android_code%/%original_file_name%",
-    "languages_mapping": *anchor
-  },
-
   # Dialer
   {
     "source": "/packages/apps/Dialer/java/com/android/dialer/app/res/values/aicp_strings.xml",

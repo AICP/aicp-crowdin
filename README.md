@@ -7,16 +7,16 @@ It can handle automatic commiting to AICP's Gerrit, submitting or voting on open
 
 ## Prerequisites
 
-1. Java runtime environment 17.x.x is needed to run the crowdin-cli tool.
-2. Python version >3.14.x is needed to execute this script (as it is necessary for building the sources anyway).
+1. As of version 5.x.x there is no Java runtime environment needed anymore to run the crowdin-cli tool.
+2. Python version >3.14.x is needed to execute the script.
 3. The package "python-lxml" is used for removing empty or faulty translations after download. So it needs to be installed on the system. (also see: https://lxml.de/)
 4. The package "python-yaml" must be installed as it is used for parsing the YAML configuration files for determining which files to push.
 5. The package "python-git" is used for Git integration and must be installed for example via <code>pip install Gitpython</code> (also see: https://gitpython.readthedocs.io/en/stable/).
 6. The install of the package "python-gitdb" with its dependencies via a package manager or via <code>pip install gitdb</code> for python 3.x.x.
-7. A Java version of crowdin-cli >= 4.14.x or a packaged version (see: https://support.crowdin.com/cli-tool/) is required for this script to work.
+7. An installed version of the crowdin-cli tool >= 5.0.0 or a self-contained version (see: https://support.crowdin.com/cli-tool/) is required for the script to work.
    It can be downloaded and installed for different Linux distributions as described on the mentioned webpage.
    *Note: The current limitation is that the script will search for an executable (alias) using the "which" command on a Linux/macOS installation.*
-8. Currently the crowdin-cli tool requires either Windows10/11 WSL2, macOS or Linux to work.
+8. Currently the script for the crowdin-cli tool requires either Windows11, macOS or Linux to work.
 9. The file <code>w16.2_extra_packages.xml</code> and <code>/config/w16.2_crowdin.xml</code> must reside in the directory <code>/config</code> in the main source directory (e.g."/aicp").
    This makes sure you will sync all the translatable and extra packages.
    **Please remember that you should comment out packages in <code>w16.2_extra_packages.xml</code> that you already have in your local `aicp_manifest.xml` file as these are device and version dependent. Doubled entries might otherwise lead to syncing errors using the repo command.**
@@ -135,9 +135,10 @@ The optional "<code>--owner 'Name'</code>" or "<code>--uploader 'Name'</code>" a
 
 ##### Notes:
 
- - The scripts and the crowdin-cli JAR file provide some output that show off the actions performed
+ - The scripts and the crowdin-cli file provide some output that show off the actions performed
    in the terminal, so you can follow the execution of the commands.
- - The crowdin-cli JAR file will display a message in the terminal, if it is outdated and found a
+ - The crowdin-cli tool will display a message in the terminal, if it is outdated and found a
    newer version available for download. This is not an error, just a reminder for you!
- - **When committing a translation fails, the reason for that cannot be determined everytime. The script will simply display the message "Failed: " and an error message mentioning what went wrong.
-   The script will try to continue when this happens and display "Nothing to commit".**
+ - **When committing a translation fails, the reason for that cannot be determined everytime.
+   The script will display a simple message like "Failed: " and an error message mentioning what went wrong.
+   The script will try to continue when this happens and display "Nothing to commit" when it is finished.**

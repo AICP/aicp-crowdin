@@ -14,7 +14,6 @@
   <project path="frameworks/opt/slimrecent" name="AICP/frameworks_opt_slimrecent" />
 
   <project path="packages/apps/AicpExtras" name="AICP/packages_apps_AicpExtras" />
-  <project path="packages/apps/Updater" name="AICP/packages_apps_Updater" />
   <project path="packages/apps/Dialer" name="AICP/packages_apps_Dialer" />
   <project path="packages/apps/Launcher3" name="AICP/packages_apps_Launcher3" />
   <project path="packages/apps/Settings" name="AICP/packages_apps_Settings" />
